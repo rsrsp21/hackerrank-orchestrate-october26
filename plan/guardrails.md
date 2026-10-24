@@ -218,8 +218,8 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
 ## P4 — Evidence Indexing & State Reconstruction
 
 - **Entry gate:**
-  - [ ] P1 exit gate met (all evidence families understood).
-  - [ ] P3 resolver ready.
+  - [x] P1 exit gate met (all evidence families understood).
+  - [x] P3 resolver ready.
 - **Do:**
   - Build the index once: identifier → occurrences `(evidence_id, system_id, resource_id, observed_at, fields)`.
   - Filter per case on `captured_at` / `event_time` ≤ `audit_at`.
@@ -236,9 +236,9 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
   - For each sample, does the reconstructed resource set equal the set of resources in the expected steps? List the extras and misses.
   - Is every fact's evidence ID dated ≤ `audit_at`?
 - **Exit gate:**
-  - [ ] Resource-set recall and precision on the samples reported.
-  - [ ] Misses are explained.
-  - [ ] No temporal violations (an assertion in the code).
+  - [x] Resource-set recall and precision on the samples reported.
+  - [x] Misses are explained.
+  - [x] No temporal violations (an assertion in the code).
 
 ## P5 — Policy Engine & Step Generation
 

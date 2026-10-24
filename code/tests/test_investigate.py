@@ -74,3 +74,19 @@ def test_deterministic(cases):
     snap = lambda cs: {c: (i.status, i.account, tuple(i.resources)) for c, i in cs.items()}  # noqa: E731
     assert snap(again) == snap(cases)
 
+
+
+def test_catalog_link_rejected_when_record_names_someone_else():
+    """Q9 rule: a catalog-only link is dropped when the record's own identifiers belong to another person."""
+    from types import SimpleNamespace
+
+    from investigate import identity_conflict
+
+    subject = SimpleNamespace(link_keys=lambda: frozenset({("user", "user_09"), ("email", "kwame-mensah@proton.me")}))
+    other = SimpleNamespace(link_keys=frozenset({("email", "sj.park@naver.com"), ("phone", "821058379451")}))
+    own = SimpleNamespace(link_keys=frozenset({("email", "kwame-mensah@proton.me")}))
+    blank = SimpleNamespace(link_keys=frozenset())
+    index = SimpleNamespace(by_rid={"marketing_001": [other], "marketing_002": [own], "marketing_003": [blank]})
+    assert identity_conflict(index, "marketing_001", subject)
+    assert not identity_conflict(index, "marketing_002", subject)
+    assert not identity_conflict(index, "marketing_003", subject)  # no direct identifiers → cannot contradict

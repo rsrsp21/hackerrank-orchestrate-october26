@@ -344,3 +344,9 @@ The PDFs were extracted with `code/explore/extract_docs.py` (pdfplumber; text an
 - **Q8.** How are support messages (REDACT) vs attachments (DELETE) identified when only a `support_*` resource ID is seen (ticket_attachments / attachment_pii_scan / SUPPORT_ATTACHMENT ledger = attachment)? Resolve in 1.6.
 - **Q9.** marketing_001 (evidence_60) displays identifiers of an unknown person ("Soo-jin Park", sj.park@naver.com) while activity_4008 (7 minutes *after* the screenshot) links it to user_09 / kwame-mensah@proton.me (case_63). Is it the subject's remaining MARKETING_PROFILE (cite activity_4008 and/or evidence_60) or a decoy to exclude because no subject identifier appears in the record? Decide in P4 with the general linking rule (catalog link = grounded link?), and record the rationale.
 - **Q10.** The legal retention register (evidence_27) lists order refs with user_ids but no `legal_hold_*` resource IDs. How do LEGAL_HOLD_RECORD steps get their resource_id (retained_order_records rows `legal_hold_NNNN` ↔ `ORD-2026NNNN`)? Resolve in 1.6/P4.
+
+### Resolutions after Phase 4 (2026-10-24)
+- **Q9 →** general `identity_conflict` rule: a catalog-only link is dropped when the record's own identifiers name another person. marketing_001 is not attributed to case_63.
+- **Q10 →** legal holds come only from records with resource ids (retained_order_records / retained_order_loaded / ledgers): RETAIN → VERIFY_RECORD_PRESENT. 8 found in eval.
+- **Q11 →** case-number tie-break (3/3 sample collision groups), last resort after identifier elimination.
+- **New rules from Phase 4:** request window (state evidence in [requested_at, audit_at]); membership may use post-audit evidence (constitution Art. 3.5, user-approved); direct observation beats omission proof; follow-up workflow offsets are template-specific; two-pass attribution of identifier-less anonymized analytics.

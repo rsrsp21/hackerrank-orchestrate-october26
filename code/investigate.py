@@ -104,6 +104,15 @@ def resource_state(index, rid, request, link):
                          COMPLIANT.get(obs.state, ""))
 
 
+def identity_conflict(index, rid, subject):
+    """A catalog link is a claim. Reject it when the record's own evidence names people (emails/phones) and none of
+    them is the subject (Q9: marketing_001 shows another person's identifiers while a catalog row links it to
+    user_09). Records that carry no direct identifiers cannot contradict the link."""
+    keys = subject.link_keys()
+    direct = {k for o in index.by_rid.get(rid, []) for k in o.link_keys if k[0] in ("email", "phone")}
+    return bool(direct) and not (direct & keys)
+
+
 def load_requests(data_dir, names=("deletion_requests.csv", "sample_deletion_requests.csv")):
     rows = []
     for name in names:
@@ -147,6 +156,9 @@ def investigate_all(data_dir, requests=None, index=None):
         inv.account = resource_state(index, acc.resource_id, r, f"{acc.kind}:{acc.method}")
         for rid, link in sorted(links_by_case[req.case_id].items()):
             if rid == acc.resource_id:
+                continue
+            if link.kind == "L4" and identity_conflict(index, rid, inv.subject):
+                inv.notes.append(f"{rid}: catalog link {link.evidence_id} contradicted by the record's own identifiers")
                 continue
             st = resource_state(index, rid, r, f"{link.kind}:{link.evidence_id}")
             if st.action == "UNKNOWN":

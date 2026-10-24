@@ -63,7 +63,7 @@ Output: root `output.csv` → `case_id,deletion_status,steps_json`, sorted by `c
 | 1 Exploration | ✅ closed | `code/explore/*`, `plan/data_notes.md`, `plan/sample_walkthrough.md` | 1b3c994, dbc59fc |
 | 2 Intent | ✅ closed | `code/intent.py`, `code/tests/test_intent.py` | 595e634 |
 | 3 Identity | ✅ closed | `code/identity.py`, `code/tests/test_identity.py`, `code/explore/identity_report.py` | 12ac405 … 7664749 |
-| 4 Evidence & state | ▶ planned | `plan/phases/phase4.md` | — |
+| 4 Evidence & state | ✅ closed | `code/evidence/*`, `code/linking.py`, `code/workflow.py`, `code/investigate.py` | 997a8f4 … (Phase 4 close) |
 | 5 Policy & steps | ⏳ | — | — |
 | 6 Evaluation | ⏳ (8 custom cases drafted) | `code/evaluation/custom_cases.md` | — |
 | 7 LLM & usage | ⏳ | — | — |
@@ -71,7 +71,7 @@ Output: root `output.csv` → `case_id,deletion_status,steps_json`, sorted by `c
 | 9 Reports | ⏳ | — | — |
 | 10 Package & submit | ⏳ | — | — |
 
-Tests: 74 passing (`uv run python -m pytest code/tests -q`). Branch: `solution`.
+Tests: 118 passing (`uv run python -m pytest code/tests -q`). Branch: `solution`.
 
 ---
 

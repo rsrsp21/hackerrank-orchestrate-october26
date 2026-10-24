@@ -124,16 +124,20 @@ ResourceState(system_id, resource_id, category, state, evidence_id, link: "L1"..
   - Q11 decided: subject-order tie-break, last resort (2/2 sample collision groups vs 1/2 for queue order).
 - [x] 4.7 `code/investigate.py` (2026-10-24): `investigate_all(data_dir)` → CaseInvestigation per case (550 in ~0.9 s): subject → identifier links (membership any, Art. 3.5) → joint workflow account → state per resource in [requested_at, audit_at] → action (DELETE/REDACT/ANONYMIZE/DISABLE/BLOCK/RETAIN/NONE). **Two-pass:** identifier-less anonymized analytics are attributed only among provisionally COMPLETE cases. A `check_temporal` guard raises if any chosen evidence lies outside the case window. **Q11 revised:** tie-break = case-number order (3/3 sample collision groups incl. case_03 vs eval case_44; subject order 2/3, queue order 1/2) — documented generator-order artifact, last resort only.
   - **Samples: status 32/32; resource sets exact for 29/32** (diffs only: the unreachable audit_record_6645 / audit_record_5569 and the accepted case_23 tie); **cited evidence 75/75**. `code/tests/test_investigate.py` (6 tests). Suite: 117 passed; deterministic double run verified.
-- [ ] 4.8 Decide Q9/Q10/Q11 with data; write the rationale into data_notes §5.
-- [ ] 4.9 `code/explore/investigation_report.py`: for the 32 samples, compare the investigated resource set + states + evidence with the expected steps (precision, recall, evidence agreement) and list every miss. For the 518 eval cases: counts by category/state, cases with no account, tied workflows, low-confidence links.
-- [ ] 4.10 Performance: the full investigation over 550 requests runs in < 60 s, deterministically (run twice → identical results).
+- [x] 4.8 Decisions (2026-10-24):
+  - **Q9 (marketing_001):** general rule `identity_conflict`: a catalog-only (L4) link is dropped when the record's own evidence carries direct identifiers (email/phone) and none belong to the subject. In every other catalog scenario the record shows the subject's own identifiers; evidence_60 shows "Soo-jin Park / sj.park@naver.com" (no known user), contradicting activity_4008 → marketing_001 is **not** attributed to case_63. Active once Gemini image facts exist; unit-tested.
+  - **Q10 (legal holds):** general path — `retained_order_records` / `retained_order_loaded` / ledger rows (subject_reference = user_id) → RETAIN → VERIFY_RECORD_PRESENT. The PDF register names no resource → contributes nothing. Eval: 8 legal holds found (cases 220, 261, 390, 432, 460, 473, 505, 511).
+  - **Q11:** case-number tie-break (see 4.7). An extra "prefer in-window-evidenced account" tie preference was tried and **reverted** (no sample gain; eval case_226 lost its account evidence).
+- [x] 4.9 `code/explore/investigation_report.py`: samples **status 32/32, resource recall 0.973 / precision 0.991, cited evidence 75/75**. Eval (518): INCOMPLETE 346 / COMPLETE 162 / NOT_APPLICABLE 10; account links own-identifier 238, unique 139, elimination 11, tie-break 108, identifier-account 8, L6 fallback 4; ≤1 retained audit record per case (425 cases have one); findings per case 0/1/2/4.
+  - **Open for P5:** 11 COMPLETE eval cases have no citable account evidence: 9 are the screenshot scenarios (34, 35, 39, 45, 50, 52, 53, 55, 61 — wait for P7 image facts); cases 126/127 have only a post-audit export (evidence_12 exported 08-19, snapshot 08-11, audit 08-17). Treating snapshot time as capture time was rejected because it contradicts 5 sample citations (cases 21, 25–28 cite evidence_92, not evidence_02). P5 must decide how to verify an account with no citable evidence.
+- [x] 4.10 Performance/determinism: full investigation ≈0.9 s for 550 requests; `test_deterministic` verifies identical results on a second run.
 
-## 5. Exit gate
-- [ ] Samples: resource-set recall ≥ 95% and precision ≥ 95% vs expected steps; state agreement 100% on matched resources; evidence_id agreement reported (target ≥ 90%).
-- [ ] Every miss is explained in phase4.md (and fixed or accepted with a reason).
-- [ ] No temporal violations (assertion active; trap rows excluded).
-- [ ] Q9/Q10/Q11 decided and documented.
-- [ ] Tests green; deterministic double run; committed.
+## 5. Exit gate ✅ (2026-10-24)
+- [x] Samples: resource recall 0.973 (≥0.95), precision 0.991 (≥0.95); status 32/32; cited evidence 75/75 (target ≥90%).
+- [x] Every miss explained: audit_record_6645 / audit_record_5569 exist nowhere in participant data; case_23 is a 3-way tie among activity-only accounts (accepted).
+- [x] No temporal violations: `check_temporal` guard runs on every investigation; trap rows excluded (tests).
+- [x] Q9/Q10/Q11 decided and documented.
+- [x] Tests green (118), deterministic double run, committed.
 
 ## 6. Guardrail reminders
 - Evidence first: activity results are claims; only observations (and CHECK_*/repopulated signals) give a state.
