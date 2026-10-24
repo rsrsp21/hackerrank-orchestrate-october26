@@ -64,7 +64,7 @@ Output: root `output.csv` → `case_id,deletion_status,steps_json`, sorted by `c
 | 2 Intent | ✅ closed | `code/intent.py`, `code/tests/test_intent.py` | 595e634 |
 | 3 Identity | ✅ closed | `code/identity.py`, `code/tests/test_identity.py`, `code/explore/identity_report.py` | 12ac405 … 7664749 |
 | 4 Evidence & state | ✅ closed | `code/evidence/*`, `code/linking.py`, `code/workflow.py`, `code/investigate.py` | 997a8f4 … (Phase 4 close) |
-| 5 Policy & steps | ⏳ | — | — |
+| 5 Policy & steps | ▶ planned | `plan/phases/phase5.md` | — |
 | 6 Evaluation | ⏳ (8 custom cases drafted) | `code/evaluation/custom_cases.md` | — |
 | 7 LLM & usage | ⏳ | — | — |
 | 8 Full run & validation | ⏳ | — | — |
