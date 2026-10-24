@@ -73,6 +73,8 @@ Output: root `output.csv` → `case_id,deletion_status,steps_json`, sorted by `c
 
 Tests: 152 passing (`uv run python -m pytest code/tests -q`). Branch: `solution`.
 
+**Scoring strategy:** see `plan/scoring_plan.md` (transcript /10, interview /30, output /30, code zip /30) — remaining phases 8, 9 (+9b interview prep), 10.
+
 ---
 
 ## Phase 1 — Setup & Data Exploration (understand before coding)
