@@ -58,13 +58,13 @@ Header; 518 rows equal to the input case set; numeric sort; no duplicates; statu
 - [x] 5.2 `code/tests/test_policy.py` (8 tests): allowed pairs, NOT_APPLICABLE `[]`, INCOMPLETE structure + empty evidence + flow-before-delete order, no duplicate account step, COMPLETE verification-only with evidence, every emitted pair allowed and sorted over all 550 cases, samples sequence-exact except the 3 known, compact sorted JSON round-trip. **Correction:** the sample file mixes JSON key orders (only 8/32 rows are byte-identical to sorted-key output), so equality is semantic (the grader parses JSON). Suite: 126 passed.
 - [x] 5.3 `code/evaluation/score.py` (2026-10-24): importable `score(expected, predicted)` + `format_report` + CLI on the samples; `code/tests/test_score.py` (2 tests, suite 128). **Public samples: status 1.0000; step P/R/F1 0.9948 / 0.9845 / 0.9896 (191/193); sequence exact 0.9062 (29/32 = ceiling); field accuracy step_no 0.990, phase 0.990, system_id 0.969, resource_id 0.964, operation 0.969, state 0.969, evidence_id 0.990.** Diffs = exactly the 3 known (unreachable audit_record_6645, audit_record_5569; case_23 tie).
 - [x] 5.4 **User decision (2026-10-24):** account verification without citable evidence → keep the step with `evidence_id=""`; retained record known only from post-audit evidence → omit in COMPLETE cases. Recorded in guardrails §6 and constitution Art. 6.6; matches the existing `policy.py` defaults (no code change).
-- [ ] 5.5 `code/main.py` + `code/validate_output.py`; generate root `output.csv`; the validator passes; two runs byte-identical.
-- [ ] 5.6 Update data_notes / phase files; commit. A first submittable `output.csv` exists (fallback copy kept per guardrails P8).
+- [x] 5.5 (2026-10-24) `code/main.py` (`uv run python code/main.py [--data] [--out]`; eval + sample requests investigated jointly, only eval rows written, numeric sort, previous output backed up to `code/cache/output_prev.csv`) and `code/validate_output.py` (all §9.2 checks incl. evidence existence and date ≤ audit_at). Root `output.csv`: **518 rows, VALID**, 0.9 s, status COMPLETE 162 / INCOMPLETE 346 / NOT_APPLICABLE 10; **two runs byte-identical** (sha256 74b37b402c67a4c7…). `code/tests/test_validate_output.py`: the real output passes and 9 deliberately broken variants are caught (header, row count, order, status, JSON, disallowed pair, evidence on a future step, evidence after audit_at, unknown evidence, NOT_APPLICABLE with steps). Suite: 130 passed.
+- [x] 5.6 Plans updated; committed with `output.csv` as the first submittable fallback (image-dependent cases improve in P7).
 
-## 5. Exit gate
-- [ ] Samples: status 32/32; sequence exact ≥ 28/32 (ceiling: 29 given the 2 unreachable audit records and the case_23 tie); field-level accuracy reported.
-- [ ] Root `output.csv`: 518 rows, validator green, deterministic (hash equal across two runs).
-- [ ] Tests green; committed.
+## 5. Exit gate ✅ (2026-10-24)
+- [x] Samples: status 32/32; sequence exact 29/32 (= ceiling); field accuracy reported (0.964–0.990).
+- [x] Root `output.csv`: 518 rows, validator green, deterministic (hash equal across two runs).
+- [x] Tests green (130); committed.
 
 ## 6. Guardrail reminders
 - Only allowed operation/state pairs; never DELETE a RETAIN category or a tombstone.

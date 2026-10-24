@@ -64,14 +64,14 @@ Output: root `output.csv` → `case_id,deletion_status,steps_json`, sorted by `c
 | 2 Intent | ✅ closed | `code/intent.py`, `code/tests/test_intent.py` | 595e634 |
 | 3 Identity | ✅ closed | `code/identity.py`, `code/tests/test_identity.py`, `code/explore/identity_report.py` | 12ac405 … 7664749 |
 | 4 Evidence & state | ✅ closed | `code/evidence/*`, `code/linking.py`, `code/workflow.py`, `code/investigate.py` | 997a8f4 … 751def9 |
-| 5 Policy & steps | ▶ in progress (5.1–5.4 done) | `code/policy.py`, `code/tests/test_policy.py` | de3d507 |
+| 5 Policy & steps | ✅ closed | `code/policy.py`, `code/main.py`, `code/validate_output.py`, `code/evaluation/score.py`, root `output.csv` | de3d507 … (Phase 5 close) |
 | 6 Evaluation | ⏳ (8 custom cases drafted) | `code/evaluation/custom_cases.md` | — |
 | 7 LLM & usage | ⏳ | — | — |
-| 8 Full run & validation | ⏳ | — | — |
+| 8 Full run & validation | ⏳ (validator + first valid output already done in P5) | `code/validate_output.py` | — |
 | 9 Reports | ⏳ | — | — |
 | 10 Package & submit | ⏳ | — | — |
 
-Tests: 128 passing (`uv run python -m pytest code/tests -q`). Branch: `solution`.
+Tests: 130 passing (`uv run python -m pytest code/tests -q`). Branch: `solution`.
 
 ---
 
@@ -129,7 +129,7 @@ Deliverable: `plan/data_notes.md` with schemas, the catalogue, and sample-case e
 - [x] Sort within phase: operation-table order → `system_id` → `resource_id`; renumber `step_no` from 1 (tested over all 550 cases).
 - [x] Evidence: findings + COMPLETE verifications cite IDs; INCOMPLETE remediation/verification use `""`. *Task 5.4 user decision: account step without citable evidence kept with `""`; retained record known only post-audit omitted in COMPLETE cases.*
 - [x] Replicate sample conventions (account always verified, retained record verified present, compliant items only in COMPLETE) → **samples sequence-exact 29/32 = ceiling**.
-- [x] Serialize JSON deterministically (`sort_keys=True`, compact separators). Note: the sample file mixes key orders; the grader parses JSON, so equality is semantic. *(5.1–5.2; remaining: 5.3 scoring, 5.4 decision, 5.5 main.py + validator + output.csv)*
+- [x] Serialize JSON deterministically (`sort_keys=True`, compact separators). Note: the sample file mixes key orders; the grader parses JSON, so equality is semantic. *(5.1–5.6 done)* ✅ **Phase 5 closed 2026-10-24** (`plan/phases/phase5.md`): valid deterministic 518-row `output.csv`.
 
 ## Phase 6 — Local Evaluation Harness
 

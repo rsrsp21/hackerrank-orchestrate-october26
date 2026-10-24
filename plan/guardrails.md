@@ -243,8 +243,8 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
 ## P5 — Policy Engine & Step Generation
 
 - **Entry gate:**
-  - [ ] P4 produces per-case resource states with evidence.
-  - [ ] Conventions from P1 are documented.
+  - [x] P4 produces per-case resource states with evidence.
+  - [x] Conventions from P1 are documented.
 - **Do:**
   - Category → rule → operation triple from the catalogue.
   - Generate FINDING → REMEDIATION → VERIFICATION, sorted by (operation table index, `system_id`, `resource_id`).
@@ -261,8 +261,8 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
   - Is the remediation order safe (flows and restores first)?
   - Does `json.loads(dumps)` round-trip?
 - **Exit gate:**
-  - [ ] All 32 samples are produced end-to-end.
-  - [ ] The output passes the §9.2 validator on the sample subset.
+  - [x] All 32 samples are produced end-to-end.
+  - [x] The output passes the §9.2 validator (full 518-row eval output).
 
 ## P6 — Local Evaluation Harness
 
