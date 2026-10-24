@@ -56,22 +56,22 @@ Output: root `output.csv` → `case_id,deletion_status,steps_json`, sorted by `c
 
 ---
 
-## Progress status (updated 2026-10-24)
+## Progress status (updated 2026-10-24, after task 5.2)
 
 | Phase | Status | Key artifacts | Commit |
 |---|---|---|---|
 | 1 Exploration | ✅ closed | `code/explore/*`, `plan/data_notes.md`, `plan/sample_walkthrough.md` | 1b3c994, dbc59fc |
 | 2 Intent | ✅ closed | `code/intent.py`, `code/tests/test_intent.py` | 595e634 |
 | 3 Identity | ✅ closed | `code/identity.py`, `code/tests/test_identity.py`, `code/explore/identity_report.py` | 12ac405 … 7664749 |
-| 4 Evidence & state | ✅ closed | `code/evidence/*`, `code/linking.py`, `code/workflow.py`, `code/investigate.py` | 997a8f4 … (Phase 4 close) |
-| 5 Policy & steps | ▶ planned | `plan/phases/phase5.md` | — |
+| 4 Evidence & state | ✅ closed | `code/evidence/*`, `code/linking.py`, `code/workflow.py`, `code/investigate.py` | 997a8f4 … 751def9 |
+| 5 Policy & steps | ▶ in progress (5.1–5.2 done) | `code/policy.py`, `code/tests/test_policy.py` | de3d507 |
 | 6 Evaluation | ⏳ (8 custom cases drafted) | `code/evaluation/custom_cases.md` | — |
 | 7 LLM & usage | ⏳ | — | — |
 | 8 Full run & validation | ⏳ | — | — |
 | 9 Reports | ⏳ | — | — |
 | 10 Package & submit | ⏳ | — | — |
 
-Tests: 118 passing (`uv run python -m pytest code/tests -q`). Branch: `solution`.
+Tests: 126 passing (`uv run python -m pytest code/tests -q`). Branch: `solution`.
 
 ---
 
@@ -104,20 +104,20 @@ Deliverable: `plan/data_notes.md` with schemas, the catalogue, and sample-case e
 
 ## Phase 4 — Evidence Indexing & Resource State Reconstruction (core)
 
-- [ ] Build a global index: identifier → [(source, file_id/activity_id/audit_id, system_id, resource_id, timestamp, field values)].
-- [ ] Filter evidence by `captured_at <= audit_at` and activity by `event_time <= audit_at`.
-- [ ] For each resource linked to the user, compute the latest known state at `audit_at`:
+- [x] Build a global index → `code/evidence/*` loaders (SQL, records, logs with trace joins, activity signals, PDFs, image-facts interface) + `EvidenceIndex` (by identifier key, by resource_id, account coverages). 3,077 observations, ≈1 s. *(tasks 4.1–4.4)*
+- [x] Temporal filtering: **two clocks** (file captured_at and record time ≤ audit_at) + **request window** (state evidence ≥ requested_at); membership may use post-audit evidence (user-approved, constitution Art. 3.5); `check_temporal` guard. *(4.4, 4.7)*
+- [x] For each resource linked to the user (L1–L4 identifiers/references/catalog, L5 joint workflow timing, L6 fallback), compute the latest known state at `audit_at` (direct observation beats omission proof) → `code/linking.py`, `code/workflow.py`, `code/investigate.py`:
   - present / absent (deleted) / redacted / anonymized;
   - which identifiers are still exposed (for REDACT/ANONYMIZE categories);
   - SQL replica drift: primary deleted but replica still holds row → finding on the replica resource.
-- [ ] Detect **active data flows**: sync/import/export jobs whose source still has (or recreates) the data after deletion → `REPORT_ACTIVE_DATA_FLOW`.
-- [ ] Detect **restore risks**: backups containing the user with restore not blocked → `REPORT_RESTORE_RISK`.
-- [ ] Never trust `reported_result=SUCCESS` alone — confirm with a later snapshot/evidence.
-- [ ] Pick the correct proving `evidence_id` per finding/verification (match sample conventions: which file wins when several prove the same thing — likely latest before `audit_at`).
+- [x] Detect **active data flows** (connector enabled / heartbeat / ledger ACTIVE / CHECK_DATA_FLOW / repopulated) → `REPORT_ACTIVE_DATA_FLOW`.
+- [x] Detect **restore risks** (restore_allowed / eligible & no deletion block / ledger ACTIVE / CHECK_RESTORE_ACCESS) → `REPORT_RESTORE_RISK`.
+- [x] Never trust `reported_result=SUCCESS` alone: activity results are claims; state comes only from observations (plus CHECK_*/repopulated signals).
+- [x] Pick the proving `evidence_id`: latest usable direct observation in [requested_at, audit_at], else latest qualifying omission proof → **samples: cited evidence 75/75, status 32/32, resource recall 0.973 / precision 0.991**. Q9/Q10/Q11 decided. ✅ **Phase 4 closed 2026-10-24** (`plan/phases/phase4.md`).
 
 ## Phase 5 — Policy Engine & Step Generation
 
-- [ ] Map each resource → `data_category` → rule → required action:
+- [x] Map each resource → `data_category` → rule → required action (`code/investigate.py` ACTIONS + `code/policy.py` ACTION_STEPS; 15 allowed pairs):
   - DELETE → `REPORT_REMAINING_RECORD` / `DELETE_RECORD` / `VERIFY_RECORD_ABSENT`
   - REDACT → `REPORT_EXPOSED_PII` / `REDACT_RECORD` / `VERIFY_RECORD_REDACTED`
   - ANONYMIZE → `REPORT_EXPOSED_PII` / `ANONYMIZE_RECORD` / `VERIFY_RECORD_ANONYMIZED`
@@ -125,11 +125,11 @@ Deliverable: `plan/data_notes.md` with schemas, the catalogue, and sample-case e
   - BACKUP_ARCHIVE → `REPORT_RESTORE_RISK` / `BLOCK_RESTORE` / `VERIFY_RESTORE_BLOCKED`
   - Data flows → `REPORT_ACTIVE_DATA_FLOW` / `DISABLE_DATA_FLOW` / `VERIFY_DATA_FLOW_DISABLED`
   - ACCOUNT_TOMBSTONE → keep `user_id`, redact name/email/phone/hash.
-- [ ] Status: `COMPLETE` iff zero findings; else `INCOMPLETE`.
-- [ ] Sort within phase: operation-table order → `system_id` → `resource_id`; renumber `step_no` from 1.
-- [ ] Evidence: findings + COMPLETE verifications cite IDs; INCOMPLETE remediation/verification use `""`.
-- [ ] Replicate sample conventions (e.g. which extra verifications always appear, like the account record).
-- [ ] Serialize JSON deterministically (`sort_keys=True`, compact separators, like the sample).
+- [x] Status: `COMPLETE` iff zero findings; else `INCOMPLETE` (samples 32/32).
+- [x] Sort within phase: operation-table order → `system_id` → `resource_id`; renumber `step_no` from 1 (tested over all 550 cases).
+- [~] Evidence: findings + COMPLETE verifications cite IDs; INCOMPLETE remediation/verification use `""`. *Pending task 5.4: COMPLETE verifications with no citable evidence (account 11 cases, retained record 8 cases) — user decision.*
+- [x] Replicate sample conventions (account always verified, retained record verified present, compliant items only in COMPLETE) → **samples sequence-exact 29/32 = ceiling**.
+- [x] Serialize JSON deterministically (`sort_keys=True`, compact separators). Note: the sample file mixes key orders; the grader parses JSON, so equality is semantic. *(5.1–5.2; remaining: 5.3 scoring, 5.4 decision, 5.5 main.py + validator + output.csv)*
 
 ## Phase 6 — Local Evaluation Harness
 
