@@ -350,3 +350,9 @@ The PDFs were extracted with `code/explore/extract_docs.py` (pdfplumber; text an
 - **Q10 →** legal holds come only from records with resource ids (retained_order_records / retained_order_loaded / ledgers): RETAIN → VERIFY_RECORD_PRESENT. 8 found in eval.
 - **Q11 →** case-number tie-break (3/3 sample collision groups), last resort after identifier elimination.
 - **New rules from Phase 4:** request window (state evidence in [requested_at, audit_at]); membership may use post-audit evidence (constitution Art. 3.5, user-approved); direct observation beats omission proof; follow-up workflow offsets are template-specific; two-pass attribution of identifier-less anonymized analytics.
+
+### Phase 7 (2026-10-24)
+- Image facts come from Gemini `gemini-4-argon` (prompt `code/prompts/image_facts.md` v2) into the committed `code/llm_cache/image_facts/`; 11/11 agree with the Phase 1 manual transcriptions (test fixtures only).
+- Image facts may carry `labels` (file names, bare user ids), resolved through catalog links exactly like PDFs (`delivery_confirmation_19.pdf` → object_19, `user_17` → tombstone_17).
+- Q9 is active: marketing_001 is dropped for case_63 by `identity_conflict`.
+- Known uncertainty: case_45 verifies all six user_03 audit records shown in evidence_37; the samples only ever show one audit record per subject, but no evidence-based rule distinguishes the five extra ones (a retention-period rule was tested and rejected).

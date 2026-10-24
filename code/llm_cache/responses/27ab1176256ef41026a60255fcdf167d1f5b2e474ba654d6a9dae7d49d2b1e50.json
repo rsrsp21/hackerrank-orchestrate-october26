@@ -1,0 +1,29 @@
+{
+  "model": "gemini-4-argon",
+  "prompt_version": "image_facts/v2",
+  "provider": "google",
+  "response": {
+    "records": [
+      {
+        "category": "SUPPORT_MESSAGE",
+        "emails": [
+          "kagyeman8947@fastmail.com"
+        ],
+        "labels": [
+          "CS-5034",
+          "ORD-20265034"
+        ],
+        "phones": [],
+        "references": [],
+        "resource_id": "support_1034",
+        "state": "IDENTIFIABLE",
+        "user_ids": []
+      }
+    ]
+  },
+  "task": "image_facts",
+  "usage": {
+    "input_tokens": 2052,
+    "output_tokens": 311
+  }
+}

@@ -45,20 +45,20 @@ class CachedLLM:                               # wraps any client
 Per model and overall: live calls, cache hits, input tokens, output tokens, total, average per request (÷ 518), estimated cost (USD) from the configured prices with the pricing source and date stated in `usage_report.md`.
 
 ## 3. Tasks
-- [ ] 7.1 `code/llm.py` (env loader, Usage, GeminiClient, CachedLLM, meter) + unit tests with a fake client (cache hit/miss, keyless fallback, invalid JSON handling, metering totals). No network in tests.
-- [ ] 7.2 `code/prompts/image_facts.md` + `code/image_extract.py`; dry run on **one** image (evidence_04) and inspect the facts against the Phase 1 transcription before running all 11.
-- [ ] 7.3 Run all 11 images; validate every facts file; compare against the Phase 1 transcriptions (test fixtures `code/tests/fixtures/image_facts_expected.json`, used **only** by tests, never by the pipeline): resource ids, states, identifiers.
-- [ ] 7.4 Re-run the pipeline: samples must be unchanged (no sample cites an image) — status 32/32, F1 ≥ 0.990; report the eval deltas for the 12 image scenario cases (34, 35, 39, 45, 46, 50, 52, 53, 55, 61, 63, 33) and confirm the Q9 identity-conflict rule fires for marketing_001.
-- [ ] 7.5 Intent fallback wired in (`intent.py` / `main.py`), tested with a fake client.
-- [ ] 7.6 Keyless reproducibility check: temporarily hide `.env` (or set an env flag), run `main.py` → byte-identical `output.csv`; second run with key → 0 new calls (all cache hits).
-- [ ] 7.7 Usage data for the final run captured; pricing source for `gemini-4-argon` provided/confirmed by the user (prices are not guessed).
-- [ ] 7.8 Plans/notes updated; committed (cache included, `.env` never).
+- [x] 7.1 `code/llm.py` (2026-10-24): `.env` loader, `GeminiClient` (temperature 0, JSON output, retries), `CachedLLM` (committed response cache keyed by provider/model/task/prompt version/prompt/image hashes; keyless fallback; invalid answers never cached), `Meter`. `code/tests/test_llm.py` (fake client, no network).
+- [x] 7.2 `code/prompts/image_facts.md` + `code/image_extract.py`; dry run on evidence_04 matched the Phase 1 transcription exactly (2,029 in / 136 out tokens). Image facts gained `labels`, resolved through catalog links (`delivery_confirmation_19.pdf` → object_19, `user_17` → tombstone_17), the same mechanism as PDFs.
+- [x] 7.3 All 11 images extracted. **Prompt bug found and fixed (v1 → v2):** v1 defined IDENTIFIABLE as "name, email, phone, *or user id* shown", so the evidence_42 tombstone (only the permitted stable user_id) came back IDENTIFIABLE; v2 counts user ids as identifying only for analytics (tombstones and support messages keep the stable reference; rule_15 / sample case_26). All 11 re-extracted with v2 for consistency; superseded v1 answers removed from the cache (their tokens still counted as spend). `code/tests/test_image_facts.py`: **11/11 images agree with the manual transcriptions** (resource ids, categories, states, key identifiers); the manual transcriptions are test fixtures only.
+- [x] 7.4 Pipeline rerun: **samples unchanged** (status 1.0000, step F1 0.9896, sequence 0.9062), custom cases 12/12, validator green. Eval changes confined to the 10 image scenarios (34, 35, 39, 45, 46, 50, 52, 53, 55, 61): status COMPLETE 162 → 154, INCOMPLETE 346 → 354. COMPLETE cases without citable account evidence 11 → 3 (45, 126, 127). Q9 rule fires: marketing_001 dropped for case_63 ("catalog link contradicted by the record's own identifiers"). Checked and rejected a "retained audit record needs a supplied retention period" rule: 12 of 24 sample-expected audit records have no retention-bearing evidence. So case_45 verifies all 6 audit records of user_03 (known uncertainty: the samples only ever show one per subject).
+- [x] 7.5 `intent.classify_with_fallback` + `code/prompts/intent_fallback.md`: only UNSURE texts are sent (0 in eval today); invalid or absent answers keep the deterministic default; wired through `investigate_all(..., llm=)`. Test with a fake client.
+- [x] 7.6 Reproducibility: keyed run, keyless run (`GEMINI_API_KEY=`), and `--no-llm` produce **byte-identical** output.csv (sha256 0d80a7d4bad67187…). Keyed re-run made **0 live calls** (facts and answers come from the committed cache).
+- [~] 7.7 Usage captured (`code/llm_cache/usage_last_run.json`): the final output relies on 11 cached `gemini-4-argon` image-facts answers = **22,576 input + 3,943 output tokens**; total spent during development including the superseded v1 extraction = 44,899 input + 9,502 output tokens. **Pending: per-token prices for gemini-4-argon from the user** (not guessed) for the cost estimate.
+- [x] 7.8 Plans/notes updated; committed (`code/llm_cache/` included, `.env` never).
 
 ## 4. Exit gate
-- [ ] 11/11 image facts files present and valid; fixture agreement reported (target: all resource ids and states correct).
-- [ ] Samples unchanged (status 32/32, sequence 29/32); validator green; deterministic.
-- [ ] Keyless run byte-identical; second keyed run makes 0 new calls.
-- [ ] Usage numbers captured; tests green; committed.
+- [x] 11/11 image facts files present and valid; fixture agreement 11/11.
+- [x] Samples unchanged (status 32/32, sequence 29/32); validator green; deterministic.
+- [x] Keyless run byte-identical; keyed re-run makes 0 new calls.
+- [~] Usage numbers captured; cost estimate waits for the user's prices. Tests green (152); committed.
 
 ## 5. Guardrail reminders
 - The LLM extracts **facts**; it never decides findings, steps, or evidence ids.

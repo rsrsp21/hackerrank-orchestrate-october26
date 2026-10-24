@@ -11,7 +11,9 @@ Facts schema (one file per image):
   "model": "<vision model id>",
   "records": [
     {
-      "resource_id": "account_5762",          # required, as printed on screen
+      "resource_id": "account_5762",          # as printed on screen ("" when the screen shows no resource id)
+      "labels": ["CS-8538"],                  # other printed references (file names, ticket/statement numbers,
+                                              # bare user ids); resolved to a resource via data-catalog links
       "category": "USER_PROFILE",             # a Category value
       "state": "PRESENT",                     # a State value
       "emails": ["..."], "phones": ["..."], "user_ids": ["user_11"],
@@ -37,9 +39,18 @@ def facts_path(file_id, facts_dir=FACTS_DIR):
     return Path(facts_dir) / f"{file_id}.json"
 
 
-def _record_observation(ef, rec):
-    rid = rec.get("resource_id", "")
-    if not RESOURCE_RE.fullmatch(rid or ""):
+def _resolve(rec, links):
+    rid = (rec.get("resource_id") or "").strip()
+    if RESOURCE_RE.fullmatch(rid):
+        return rid
+    labels = {str(x).strip() for x in rec.get("labels", []) if x} | ({rid} if rid else set())
+    hits = sorted({l.resource_id for l in links if l.label in labels and l.label != l.resource_id})
+    return hits[0] if len(hits) == 1 else None
+
+
+def _record_observation(ef, rec, links=()):
+    rid = _resolve(rec, links)
+    if rid is None:
         return None
     try:
         category, state = Category(rec["category"]), State(rec["state"])
@@ -54,7 +65,7 @@ def _record_observation(ef, rec):
                        state, frozenset(keys), frozenset(refs), source=f"{ef.path.name}:image_facts")
 
 
-def load(manifest, facts_dir=FACTS_DIR):
+def load(manifest, facts_dir=FACTS_DIR, links=()):
     observations, missing = [], []
     for ef in files_under(manifest, "images", {".png", ".jpg", ".jpeg"}):
         path = facts_path(ef.file_id, facts_dir)
@@ -63,7 +74,7 @@ def load(manifest, facts_dir=FACTS_DIR):
             continue
         facts = json.loads(path.read_text(encoding="utf-8"))
         for rec in facts.get("records", []):
-            obs = _record_observation(ef, rec)
+            obs = _record_observation(ef, rec, links)
             if obs:
                 observations.append(obs)
     return observations, missing

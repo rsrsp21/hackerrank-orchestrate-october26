@@ -1,0 +1,32 @@
+{
+  "model": "gemini-4-argon",
+  "prompt_version": "image_facts/v2",
+  "provider": "google",
+  "response": {
+    "records": [
+      {
+        "category": "ACCOUNT_TOMBSTONE",
+        "emails": [],
+        "labels": [
+          "user_17",
+          "ORD-20263245",
+          "CS-3245",
+          "CS-3378",
+          "FIN-7742"
+        ],
+        "phones": [],
+        "references": [],
+        "resource_id": "",
+        "state": "REDACTED",
+        "user_ids": [
+          "user_17"
+        ]
+      }
+    ]
+  },
+  "task": "image_facts",
+  "usage": {
+    "input_tokens": 2064,
+    "output_tokens": 784
+  }
+}

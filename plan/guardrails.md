@@ -288,8 +288,8 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
 ## P7 — LLM Integration & Usage Tracking
 
 - **Entry gate:**
-  - [ ] A deterministic baseline exists and its weaknesses are identified.
-  - [ ] API key present in env (never printed).
+  - [x] A deterministic baseline exists and its weaknesses are identified.
+  - [x] API key present in env (never printed).
 - **Do:**
   - One `llm.py` wrapper: provider, model, temperature 0, JSON-shaped responses, disk cache (`code/cache/llm/` keyed by sha256 of model + prompt + input), retry with backoff, and a meter that records calls and tokens per model.
   - Keep the prompts in `code/prompts/*.md`.
@@ -303,8 +303,8 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
   - Does a second run make 0 new calls (cache hit)?
   - Does the meter total equal the sum of individual calls?
 - **Exit gate:**
-  - [ ] LLM-assisted components improve or hold the sample metrics.
-  - [ ] The usage numbers are captured for the report.
+  - [x] LLM-assisted components hold the sample metrics (unchanged) and resolve the image scenarios.
+  - [x] The usage numbers are captured for the report (cost pending prices).
 
 ## P8 — Full Run & Output Validation
 

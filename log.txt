@@ -901,3 +901,26 @@ repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
 worktree=main
 parent_agent=none
 
+## [2026-10-24T17:37:04Z] Phase 7: Gemini image facts, intent fallback, cache, usage; Phase 7 close (cost pending prices)
+
+User Prompt (verbatim, secrets redacted):
+ok fine creeate those md files and completet phase 6 and 7 tasks and check everything properly
+
+Agent Response Summary:
+Implemented Phase 7: code/llm.py (.env loader, GeminiClient at temperature 0 with JSON output and retries, a committed response cache keyed by provider/model/task/prompt version/inputs, a keyless fallback, a meter), code/image_extract.py with prompt code/prompts/image_facts.md, label resolution for image facts via catalog links, and an UNSURE-only intent fallback. The one-image dry run matched the manual transcription; all 11 images were extracted. Found and fixed a prompt bug (v1 counted the permitted user_id as identifying for tombstones and support messages), re-extracted with v2, and removed the superseded cache entries. Results: 11/11 images agree with the manual transcriptions (test fixtures only); samples unchanged (status 1.0, F1 0.9896, sequence 29/32); custom cases 12/12; 10 eval image scenarios changed as intended; the Q9 rule fired for case_63; COMPLETE cases without account evidence went from 11 to 3. Keyed, keyless, and --no-llm runs are byte-identical; a keyed re-run makes 0 live calls. Tested and rejected a retention-period rule for audit records (it contradicts 12 sample records). Final output relies on 11 answers: 22,576 input / 3,943 output tokens. Secrets scan clean; 152 tests pass. Cost estimate pending the user's gemini-4-argon prices.
+
+Actions:
+* Created code/llm.py, code/image_extract.py, code/prompts/image_facts.md, code/prompts/intent_fallback.md, code/tests/test_llm.py, code/tests/test_image_facts.py, code/llm_cache/ (image facts + responses + usage)
+* Edited code/evidence/images.py, code/evidence/index.py, code/intent.py, code/investigate.py, code/main.py
+* 22 Gemini calls in total (11 v1 superseded + 11 v2); ran pytest, the harness, the validator, and determinism/keyless checks; secrets scan
+* Edited plan/phases/phase7.md, plan/eval_history.md, plan/phasewiseplan.md, plan/guardrails.md, plan/data_notes.md; git commit on branch solution (.env excluded)
+* Appended to log.txt
+
+Context:
+tool=Claude Code
+model=claude-opus-5-5
+branch=solution
+repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
+worktree=main
+parent_agent=none
+

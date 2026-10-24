@@ -1,0 +1,25 @@
+{
+  "file_id": "evidence_42",
+  "model": "gemini-4-argon",
+  "prompt_version": "image_facts/v2",
+  "records": [
+    {
+      "category": "ACCOUNT_TOMBSTONE",
+      "emails": [],
+      "labels": [
+        "user_17",
+        "ORD-20263245",
+        "CS-3245",
+        "CS-3378",
+        "FIN-7742"
+      ],
+      "phones": [],
+      "references": [],
+      "resource_id": "",
+      "state": "REDACTED",
+      "user_ids": [
+        "user_17"
+      ]
+    }
+  ]
+}

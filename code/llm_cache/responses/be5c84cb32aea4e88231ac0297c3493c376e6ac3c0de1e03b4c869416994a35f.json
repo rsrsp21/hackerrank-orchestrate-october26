@@ -1,0 +1,28 @@
+{
+  "model": "gemini-4-argon",
+  "prompt_version": "image_facts/v2",
+  "provider": "google",
+  "response": {
+    "records": [
+      {
+        "category": "ANALYTICS_PROFILE",
+        "emails": [
+          "darwish.omar@icloud.com"
+        ],
+        "labels": [],
+        "phones": [],
+        "references": [],
+        "resource_id": "analytics_7438",
+        "state": "IDENTIFIABLE",
+        "user_ids": [
+          "user_20"
+        ]
+      }
+    ]
+  },
+  "task": "image_facts",
+  "usage": {
+    "input_tokens": 2038,
+    "output_tokens": 115
+  }
+}

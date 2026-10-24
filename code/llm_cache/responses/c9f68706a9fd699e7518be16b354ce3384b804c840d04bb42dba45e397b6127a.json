@@ -1,0 +1,70 @@
+{
+  "model": "gemini-4-argon",
+  "prompt_version": "image_facts/v2",
+  "provider": "google",
+  "response": {
+    "records": [
+      {
+        "category": "USER_EXPORT",
+        "emails": [
+          "marcus.lee@northstar.shop"
+        ],
+        "labels": [
+          "customer_export_1261.zip"
+        ],
+        "phones": [],
+        "references": [],
+        "resource_id": "export_1261",
+        "state": "PRESENT",
+        "user_ids": []
+      },
+      {
+        "category": "USER_EXPORT",
+        "emails": [
+          "ingrid.dahl@outlook.com"
+        ],
+        "labels": [
+          "customer_export_1260.zip"
+        ],
+        "phones": [],
+        "references": [],
+        "resource_id": "export_1260",
+        "state": "PRESENT",
+        "user_ids": []
+      },
+      {
+        "category": "USER_EXPORT",
+        "emails": [
+          "sara.kim@northstar.shop"
+        ],
+        "labels": [
+          "customer_export_1259.zip"
+        ],
+        "phones": [],
+        "references": [],
+        "resource_id": "export_1259",
+        "state": "PRESENT",
+        "user_ids": []
+      },
+      {
+        "category": "USER_EXPORT",
+        "emails": [
+          "daniel.park@northstar.shop"
+        ],
+        "labels": [
+          "customer_export_1258.zip"
+        ],
+        "phones": [],
+        "references": [],
+        "resource_id": "export_1258",
+        "state": "PRESENT",
+        "user_ids": []
+      }
+    ]
+  },
+  "task": "image_facts",
+  "usage": {
+    "input_tokens": 2064,
+    "output_tokens": 377
+  }
+}

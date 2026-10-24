@@ -1,0 +1,14 @@
+{
+  "cached_answers": [
+    {
+      "answers": 11,
+      "input_tokens": 22576,
+      "model": "gemini-4-argon",
+      "output_tokens": 3943,
+      "provider": "google",
+      "task": "image_facts"
+    }
+  ],
+  "requests": 518,
+  "this_run": []
+}

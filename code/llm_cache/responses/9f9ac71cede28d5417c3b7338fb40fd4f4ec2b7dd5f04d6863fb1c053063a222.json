@@ -1,0 +1,86 @@
+{
+  "model": "gemini-4-argon",
+  "prompt_version": "image_facts/v2",
+  "provider": "google",
+  "response": {
+    "records": [
+      {
+        "category": "SECURITY_AUDIT_LOG",
+        "emails": [],
+        "labels": [],
+        "phones": [],
+        "references": [],
+        "resource_id": "audit_record_003",
+        "state": "PRESENT",
+        "user_ids": [
+          "user_03"
+        ]
+      },
+      {
+        "category": "SECURITY_AUDIT_LOG",
+        "emails": [],
+        "labels": [],
+        "phones": [],
+        "references": [],
+        "resource_id": "audit_record_002",
+        "state": "PRESENT",
+        "user_ids": [
+          "user_03"
+        ]
+      },
+      {
+        "category": "SECURITY_AUDIT_LOG",
+        "emails": [],
+        "labels": [],
+        "phones": [],
+        "references": [],
+        "resource_id": "audit_record_001",
+        "state": "PRESENT",
+        "user_ids": [
+          "user_03"
+        ]
+      },
+      {
+        "category": "SECURITY_AUDIT_LOG",
+        "emails": [],
+        "labels": [],
+        "phones": [],
+        "references": [],
+        "resource_id": "audit_record_006",
+        "state": "PRESENT",
+        "user_ids": [
+          "user_03"
+        ]
+      },
+      {
+        "category": "SECURITY_AUDIT_LOG",
+        "emails": [],
+        "labels": [],
+        "phones": [],
+        "references": [],
+        "resource_id": "audit_record_005",
+        "state": "PRESENT",
+        "user_ids": [
+          "user_03"
+        ]
+      },
+      {
+        "category": "SECURITY_AUDIT_LOG",
+        "emails": [],
+        "labels": [],
+        "phones": [],
+        "references": [],
+        "resource_id": "audit_record_004",
+        "state": "PRESENT",
+        "user_ids": [
+          "user_03"
+        ]
+      }
+    ]
+  },
+  "task": "image_facts",
+  "usage": {
+    "input_tokens": 2064,
+    "output_tokens": 490
+  }
+}

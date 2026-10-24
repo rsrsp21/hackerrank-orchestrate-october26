@@ -75,6 +75,6 @@ def build(data_dir, facts_dir=images.FACTS_DIR):
     links = activity.catalog_links(acts)
     so, sc = sql.load(manifest)
     ro, rc = records.load(manifest)
-    io, missing = images.load(manifest, facts_dir)
+    io, missing = images.load(manifest, facts_dir, links)
     observations = so + ro + logs.load(manifest) + activity.observations(acts) + documents.load(manifest, links) + io
     return EvidenceIndex(observations, sc + rc, links, acts, missing)

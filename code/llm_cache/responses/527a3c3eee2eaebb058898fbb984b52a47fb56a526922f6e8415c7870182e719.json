@@ -1,0 +1,36 @@
+{
+  "model": "gemini-4-argon",
+  "prompt_version": "image_facts/v2",
+  "provider": "google",
+  "response": {
+    "records": [
+      {
+        "category": "USER_PROFILE",
+        "emails": [
+          "haruka.s1838@zoho.com"
+        ],
+        "labels": [
+          "ORD-20265762",
+          "ORD-20265518",
+          "CS-8538"
+        ],
+        "phones": [
+          "+81 90 7610 2507"
+        ],
+        "references": [
+          "support_9538"
+        ],
+        "resource_id": "account_5762",
+        "state": "PRESENT",
+        "user_ids": [
+          "user_11"
+        ]
+      }
+    ]
+  },
+  "task": "image_facts",
+  "usage": {
+    "input_tokens": 2052,
+    "output_tokens": 194
+  }
+}

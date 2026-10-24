@@ -1,0 +1,103 @@
+{
+  "file_id": "evidence_46",
+  "model": "gemini-4-argon",
+  "prompt_version": "image_facts/v2",
+  "records": [
+    {
+      "category": "SUPPORT_ATTACHMENT",
+      "emails": [],
+      "labels": [
+        "delivery_confirmation_19.pdf"
+      ],
+      "phones": [],
+      "references": [],
+      "resource_id": "",
+      "state": "PRESENT",
+      "user_ids": []
+    },
+    {
+      "category": "SUPPORT_ATTACHMENT",
+      "emails": [],
+      "labels": [
+        "delivery_confirmation_20.pdf"
+      ],
+      "phones": [],
+      "references": [],
+      "resource_id": "",
+      "state": "PRESENT",
+      "user_ids": []
+    },
+    {
+      "category": "SUPPORT_ATTACHMENT",
+      "emails": [],
+      "labels": [
+        "return_label_4821.pdf"
+      ],
+      "phones": [],
+      "references": [],
+      "resource_id": "",
+      "state": "PRESENT",
+      "user_ids": []
+    },
+    {
+      "category": "SUPPORT_ATTACHMENT",
+      "emails": [],
+      "labels": [
+        "return_label_4876.pdf"
+      ],
+      "phones": [],
+      "references": [],
+      "resource_id": "",
+      "state": "PRESENT",
+      "user_ids": []
+    },
+    {
+      "category": "SUPPORT_ATTACHMENT",
+      "emails": [],
+      "labels": [
+        "invoice_NS-10493.pdf"
+      ],
+      "phones": [],
+      "references": [],
+      "resource_id": "",
+      "state": "PRESENT",
+      "user_ids": []
+    },
+    {
+      "category": "SUPPORT_ATTACHMENT",
+      "emails": [],
+      "labels": [
+        "parcel_damage_7713.jpg"
+      ],
+      "phones": [],
+      "references": [],
+      "resource_id": "",
+      "state": "PRESENT",
+      "user_ids": []
+    },
+    {
+      "category": "USER_EXPORT",
+      "emails": [],
+      "labels": [
+        "customer_export_2026-02-10.zip"
+      ],
+      "phones": [],
+      "references": [],
+      "resource_id": "",
+      "state": "PRESENT",
+      "user_ids": []
+    },
+    {
+      "category": "USER_EXPORT",
+      "emails": [],
+      "labels": [
+        "customer_export_2026-02-12.zip"
+      ],
+      "phones": [],
+      "references": [],
+      "resource_id": "",
+      "state": "PRESENT",
+      "user_ids": []
+    }
+  ]
+}

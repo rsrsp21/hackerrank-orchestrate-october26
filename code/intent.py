@@ -12,6 +12,7 @@ they describe how data should be treated, not whether deletion is wanted.
 import re
 import unicodedata
 from dataclasses import dataclass
+from pathlib import Path
 
 DELETION = "DELETION"
 NOT_APPLICABLE = "NOT_APPLICABLE"
@@ -126,3 +127,20 @@ def classify(text):
     if cue:
         return IntentResult(NOT_APPLICABLE, "non_deletion_topic", cue)
     return IntentResult(UNSURE, "no_cue", "")
+
+
+FALLBACK_PROMPT = Path(__file__).resolve().parent / "prompts" / "intent_fallback.md"
+
+
+def classify_with_fallback(text, llm=None):
+    """Rules first; only UNSURE texts go to the LLM (cached). Without an answer, UNSURE stays non-deletion."""
+    result = classify(text)
+    if result.label != UNSURE or llm is None:
+        return result
+    template = FALLBACK_PROMPT.read_text(encoding="utf-8")
+    version = re.search(r"prompt_version: (\S+)", template).group(1)
+    answer = llm.generate_json("intent_fallback", template.replace("{text}", text), version,
+                               validate=lambda a: isinstance(a, dict) and a.get("label") in (DELETION, NOT_APPLICABLE))
+    if answer is None:
+        return result
+    return IntentResult(answer["label"], "llm_fallback", str(answer.get("reason", ""))[:200])

@@ -17,7 +17,7 @@ from pathlib import Path
 from evidence.index import build
 from evidence.model import Category, State, resource_prefix, system_for
 from identity import IdentityError, IdentityResolver, load_identity_tables, parse_ts
-from intent import DELETION, classify
+from intent import DELETION, classify_with_fallback
 from linking import identifier_links
 from workflow import WorkflowRequest, assign_workflows
 
@@ -123,14 +123,16 @@ def load_requests(data_dir, names=("deletion_requests.csv", "sample_deletion_req
     return rows
 
 
-def investigate_all(data_dir, requests=None, index=None):
-    """case_id → CaseInvestigation for every request (deletion and non-deletion)."""
+def investigate_all(data_dir, requests=None, index=None, llm=None):
+    """case_id → CaseInvestigation for every request (deletion and non-deletion).
+
+    llm: optional CachedLLM used only for request texts the intent rules mark UNSURE."""
     index = index or build(data_dir)
     resolver = IdentityResolver(*load_identity_tables(data_dir))
     requests = requests if requests is not None else load_requests(data_dir)
     cases, links_by_case, wf_requests, owners = {}, {}, [], {}
     for r in requests:
-        inv = CaseInvestigation(r["case_id"], classify(r["request_text"]).label)
+        inv = CaseInvestigation(r["case_id"], classify_with_fallback(r["request_text"], llm).label)
         cases[r["case_id"]] = inv
         if inv.intent != DELETION:
             continue

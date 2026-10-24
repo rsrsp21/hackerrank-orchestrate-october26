@@ -1,0 +1,62 @@
+{
+  "model": "gemini-4-argon",
+  "prompt_version": "image_facts/v2",
+  "provider": "google",
+  "response": {
+    "records": [
+      {
+        "category": "DATA_FLOW",
+        "emails": [
+          "jain.aditi@gmail.com"
+        ],
+        "labels": [],
+        "phones": [],
+        "references": [],
+        "resource_id": "data_flow_1121",
+        "state": "FLOW_ACTIVE",
+        "user_ids": []
+      },
+      {
+        "category": "DATA_FLOW",
+        "emails": [
+          "lucia-torres@gmail.com"
+        ],
+        "labels": [],
+        "phones": [],
+        "references": [],
+        "resource_id": "data_flow_9846",
+        "state": "FLOW_ACTIVE",
+        "user_ids": []
+      },
+      {
+        "category": "DATA_FLOW",
+        "emails": [],
+        "labels": [
+          "Order notifications"
+        ],
+        "phones": [],
+        "references": [],
+        "resource_id": "",
+        "state": "FLOW_ACTIVE",
+        "user_ids": []
+      },
+      {
+        "category": "DATA_FLOW",
+        "emails": [],
+        "labels": [
+          "Delivery tracking"
+        ],
+        "phones": [],
+        "references": [],
+        "resource_id": "",
+        "state": "FLOW_ACTIVE",
+        "user_ids": []
+      }
+    ]
+  },
+  "task": "image_facts",
+  "usage": {
+    "input_tokens": 2038,
+    "output_tokens": 347
+  }
+}

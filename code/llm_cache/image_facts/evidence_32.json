@@ -1,0 +1,57 @@
+{
+  "file_id": "evidence_32",
+  "model": "gemini-4-argon",
+  "prompt_version": "image_facts/v2",
+  "records": [
+    {
+      "category": "BACKUP_ARCHIVE",
+      "emails": [
+        "bluepeakco@outlook.com"
+      ],
+      "labels": [],
+      "phones": [],
+      "references": [],
+      "resource_id": "backup_9291",
+      "state": "RESTORE_ALLOWED",
+      "user_ids": []
+    },
+    {
+      "category": "BACKUP_ARCHIVE",
+      "emails": [
+        "miller.logistics@company.com"
+      ],
+      "labels": [],
+      "phones": [],
+      "references": [],
+      "resource_id": "backup_9288",
+      "state": "RESTORE_ALLOWED",
+      "user_ids": []
+    },
+    {
+      "category": "BACKUP_ARCHIVE",
+      "emails": [
+        "areed1433@gmail.com"
+      ],
+      "labels": [
+        "s3://northstar-backups/customer-platform/weekly/segment-42-20260426.tar.zst"
+      ],
+      "phones": [],
+      "references": [],
+      "resource_id": "backup_9287",
+      "state": "RESTORE_ALLOWED",
+      "user_ids": []
+    },
+    {
+      "category": "BACKUP_ARCHIVE",
+      "emails": [
+        "summit-retail@company.com"
+      ],
+      "labels": [],
+      "phones": [],
+      "references": [],
+      "resource_id": "backup_9286",
+      "state": "RESTORE_ALLOWED",
+      "user_ids": []
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "model": "gemini-4-argon",
+  "prompt_version": "image_facts/v2",
+  "provider": "google",
+  "response": {
+    "records": [
+      {
+        "category": "MARKETING_PROFILE",
+        "emails": [
+          "sj.park@naver.com"
+        ],
+        "labels": [],
+        "phones": [
+          "+82 10-5837-9451"
+        ],
+        "references": [],
+        "resource_id": "marketing_001",
+        "state": "PRESENT",
+        "user_ids": []
+      }
+    ]
+  },
+  "task": "image_facts",
+  "usage": {
+    "input_tokens": 2064,
+    "output_tokens": 117
+  }
+}

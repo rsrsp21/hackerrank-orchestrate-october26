@@ -66,12 +66,12 @@ Output: root `output.csv` → `case_id,deletion_status,steps_json`, sorted by `c
 | 4 Evidence & state | ✅ closed | `code/evidence/*`, `code/linking.py`, `code/workflow.py`, `code/investigate.py` | 997a8f4 … 751def9 |
 | 5 Policy & steps | ✅ closed | `code/policy.py`, `code/main.py`, `code/validate_output.py`, `code/evaluation/score.py`, root `output.csv` | de3d507 … (Phase 5 close) |
 | 6 Evaluation | ✅ closed | `code/evaluation/{harness,main,custom_cases,score}.py`, `plan/eval_history.md` | (Phase 6 close) |
-| 7 LLM & usage | ▶ planned (key set, gemini-4-argon verified) | `plan/phases/phase7.md` | — |
+| 7 LLM & usage | ✅ closed (cost estimate pending prices) | `code/llm.py`, `code/image_extract.py`, `code/prompts/*`, `code/llm_cache/` | (Phase 7 close) |
 | 8 Full run & validation | ⏳ (validator + first valid output already done in P5) | `code/validate_output.py` | — |
 | 9 Reports | ⏳ | — | — |
 | 10 Package & submit | ⏳ | — | — |
 
-Tests: 133 passing (`uv run python -m pytest code/tests -q`). Branch: `solution`.
+Tests: 152 passing (`uv run python -m pytest code/tests -q`). Branch: `solution`.
 
 ---
 
@@ -141,11 +141,11 @@ Deliverable: `plan/data_notes.md` with schemas, the catalogue, and sample-case e
 
 ## Phase 7 — LLM Integration (only where it adds value) & Usage Tracking
 
-- [ ] Use LLM for: multilingual intent classification, image/PDF fact extraction (if OCR is weak), ambiguous record categorization.
-- [ ] Keep everything else deterministic (cheaper, reproducible).
-- [ ] Cache all LLM calls on disk keyed by input hash; temperature 0.
-- [ ] Count calls, input/output tokens per model; compute cost → feeds `usage_report.md`.
-- [ ] API key from env var, `.env` in `.gitignore`. **Decision (2026-10-24, user): provider = Google Gemini** → `GEMINI_API_KEY` in an uncommitted root `.env`; SDK `google-genai` added via `uv add` in P7; model set by the user in `.env`: `GEMINI_MODEL=gemini-4-argon` (2026-10-24); P7 first verifies this ID exists by listing the available models via the API and fails loudly if it does not. Uses: screenshot fact extraction (11 PNGs → image facts JSON), UNSURE intent fallback. **Reproducibility design:** a provider-agnostic `llm.py` interface; every LLM result is cached as structured JSON keyed by (model, prompt, input hash), and that cache is **shipped in code.zip** so a clean run *without any API key* reproduces output.csv byte-for-byte. With a key, a missing cache entry is regenerated. Without a key and without a cache entry, the pipeline falls back deterministically (images skipped, UNSURE → rule default). Swapping providers = one adapter class.
+- [x] LLM used only for: screenshot fact extraction (11 images, Gemini `gemini-4-argon`, prompt v2) and an UNSURE-only intent fallback (0 eval texts today). PDFs need no LLM (pdfplumber).
+- [x] Everything else deterministic; the LLM only extracts facts, never findings/steps/evidence ids.
+- [x] Committed cache `code/llm_cache/` keyed by provider/model/task/prompt version/prompt/image hashes; temperature 0; keyless and `--no-llm` runs byte-identical; keyed re-run = 0 live calls.
+- [~] Calls and tokens metered (`code/llm_cache/usage_last_run.json`): final output = 11 answers, 22,576 in / 3,943 out tokens. Cost waits for the user's gemini-4-argon prices.
+- [x] API key from env var, `.env` in `.gitignore`. **Decision (2026-10-24, user): provider = Google Gemini** → `GEMINI_API_KEY` in an uncommitted root `.env`; SDK `google-genai` added via `uv add` in P7; model set by the user in `.env`: `GEMINI_MODEL=gemini-4-argon` (2026-10-24); P7 first verifies this ID exists by listing the available models via the API and fails loudly if it does not. Uses: screenshot fact extraction (11 PNGs → image facts JSON), UNSURE intent fallback. **Reproducibility design:** a provider-agnostic `llm.py` interface; every LLM result is cached as structured JSON keyed by (model, prompt, input hash), and that cache is **shipped in code.zip** so a clean run *without any API key* reproduces output.csv byte-for-byte. With a key, a missing cache entry is regenerated. Without a key and without a cache entry, the pipeline falls back deterministically (images skipped, UNSURE → rule default). Swapping providers = one adapter class.
 
 ## Phase 8 — Full Run & Output Validation
 
