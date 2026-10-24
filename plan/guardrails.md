@@ -184,13 +184,13 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
   - use `reported_status`, the email, the case ID, or `CLASSIFY_REQUEST` as the deciding signal;
   - call an LLM for texts the rules decide confidently.
 - **Self-checks:**
-  - All 507 template-deletion texts → deletion.
-  - All 11 non-deletion texts → NOT_APPLICABLE.
+  - All 508 template-deletion texts → deletion.
+  - All 10 non-deletion texts (case_533–542) → NOT_APPLICABLE.
   - Trap sentences ("remove me from marketing lists only", "not a request to erase") → NOT_APPLICABLE.
 - **Exit gate:**
-  - [ ] Classifier module and tests exist.
-  - [ ] Counts printed on eval (expected ≈507 / 11; investigate any deviation).
-  - [ ] ≥3 custom non-deletion cases added for Phase 6.
+  - [x] Classifier module and tests exist.
+  - [x] Counts printed on eval (expected 508 / 10; investigate any deviation).
+  - [x] ≥3 custom non-deletion cases added for Phase 6.
 
 ## P3 — Identity Resolution
 

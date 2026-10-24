@@ -27,10 +27,11 @@ Living findings document for Phase 1. Source scripts: `code/explore/`. Uses IDs 
 ### 1.3 Request text (intent): very regular
 - Texts are 86–252 chars long and built from a template: one **intent sentence** plus one or two boilerplate sentences.
 - **Deletion intent sentences:** 12 English variants plus 5 non-English ones (pt, ko, es, ja, fr; 62 texts with non-ASCII characters). Their trailing sentences are generic ("confirm when complete", "review identifiers…").
-- **Non-deletion texts in eval: 11.** Each has a unique first sentence (phone update, stop promo emails, download data, login reset, surname fix, marketing-only removal, what info you hold, invoice copy, change email, copy of info). The second sentence often says so explicitly ("not asking for deletion", "don't delete", "keep the account").
+- **Non-deletion texts in eval: 10** (case_533–case_542, all reported NOT_STARTED; corrected from 11 in task 2.0). Each has a unique first sentence (phone update, stop promo emails, download data, login reset, surname fix, marketing-only removal, what info you hold, invoice copy, change email, copy of info). The second sentence often says so explicitly ("not asking for deletion", "don't delete", "keep the account").
   - Watch the traps: "Please **remove** me from marketing lists only" and "This is an information request, **not a request to erase** it" both contain deletion-like words.
-- **Implication:** a rule-based classifier (deletion phrase present AND no negation or non-deletion cue) will probably be exact. An LLM is only a fallback.
-- `CLASSIFY_REQUEST` activities (10 rows) say "Privacy intake classified request for account_X as non-deletion". They are a supporting signal, not proof; their count of 10 is close to the 11 texts.
+- **Result (Phase 2):** `code/intent.py` gives eval 508/10/0 and samples 32/32; CLASSIFY_REQUEST corroborates 10/10. The sample texts are free-form, so the cues cover paraphrases (remove records/results, profile is gone, cannot identify me, wipe/purge) and overrides (negations in 6 languages, marketing-only, restore requests).
+- **Implication (original):** a rule-based classifier (deletion phrase present AND no negation or non-deletion cue) will probably be exact. An LLM is only a fallback.
+- `CLASSIFY_REQUEST` activities (10 rows) say "Privacy intake classified request for account_X as non-deletion". They are a supporting signal, not proof; their count (10) equals the number of non-deletion texts.
 
 ### 1.4 Identities
 - `email_hash = sha256(email)`. It matches 850/850, and lowercasing changes nothing, so emails are already lowercase.

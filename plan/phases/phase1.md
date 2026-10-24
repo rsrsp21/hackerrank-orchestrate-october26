@@ -54,7 +54,7 @@ Packaging note: `code.zip` ships `code/requirements.txt`. Also add `pyproject.to
 - [x] `LINK_RESOURCE_IDENTITY` (12) = explicit resource→user links. `CLASSIFY_REQUEST` (10) = non-deletion classifications.
 - [x] `email_hash` = sha256(email) (850/850).
 - [x] Request emails: eval 418 current + 100 historical-only + 0 unresolved; sample 29 + 3.
-- Key extras: 11 non-deletion texts in eval (template-like, so rules will catch them); `case_id` is numeric-sorted, not zero-padded; `CHECK_DATA_FLOW` / `CHECK_RESTORE_ACCESS` details are direct evidence of active flows and restore risks.
+- Key extras: 10 non-deletion texts in eval (corrected from 11) (template-like, so rules will catch them); `case_id` is numeric-sorted, not zero-padded; `CHECK_DATA_FLOW` / `CHECK_RESTORE_ACCESS` details are direct evidence of active flows and restore risks.
 
 ### 1.3 SQL snapshots ✅ (done 2026-10-24; script `code/explore/load_sql.py`, findings in `plan/data_notes.md` §2)
 - [x] All 24 files loaded, each into its own in-memory SQLite DB (sources untouched). Tables, columns, and row counts printed. 891 observations cached to `code/cache/extracted/sql_observations.jsonl`.
