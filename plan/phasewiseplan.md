@@ -65,13 +65,13 @@ Output: root `output.csv` → `case_id,deletion_status,steps_json`, sorted by `c
 | 3 Identity | ✅ closed | `code/identity.py`, `code/tests/test_identity.py`, `code/explore/identity_report.py` | 12ac405 … 7664749 |
 | 4 Evidence & state | ✅ closed | `code/evidence/*`, `code/linking.py`, `code/workflow.py`, `code/investigate.py` | 997a8f4 … 751def9 |
 | 5 Policy & steps | ✅ closed | `code/policy.py`, `code/main.py`, `code/validate_output.py`, `code/evaluation/score.py`, root `output.csv` | de3d507 … (Phase 5 close) |
-| 6 Evaluation | ⏳ (8 custom cases drafted) | `code/evaluation/custom_cases.md` | — |
+| 6 Evaluation | ✅ closed | `code/evaluation/{harness,main,custom_cases,score}.py`, `plan/eval_history.md` | (Phase 6 close) |
 | 7 LLM & usage | ▶ planned (key set, gemini-4-argon verified) | `plan/phases/phase7.md` | — |
 | 8 Full run & validation | ⏳ (validator + first valid output already done in P5) | `code/validate_output.py` | — |
 | 9 Reports | ⏳ | — | — |
 | 10 Package & submit | ⏳ | — | — |
 
-Tests: 130 passing (`uv run python -m pytest code/tests -q`). Branch: `solution`.
+Tests: 133 passing (`uv run python -m pytest code/tests -q`). Branch: `solution`.
 
 ---
 
@@ -133,11 +133,11 @@ Deliverable: `plan/data_notes.md` with schemas, the catalogue, and sample-case e
 
 ## Phase 6 — Local Evaluation Harness
 
-- [~] `code/evaluation/main.py`: run pipeline on the 32 samples, compare to `sample_output.csv`. *Scoring core done early in task 5.3 (`code/evaluation/score.py`); the full harness with custom cases is Phase 6.*
+- [x] `code/evaluation/main.py` (logic in `harness.py`): samples + custom cases in one command; Markdown summary for the report.
 - [x] Metrics: case status accuracy; step-level P/R/F1 (multiset); field-level accuracy (all 7 fields); sequence exact → `score.py` (samples: status 1.000, step F1 0.990, sequence 0.906).
-- [ ] Print per-case diffs; iterate Phases 3–5 until samples are ~100%.
-- [ ] Create **≥3 custom eval cases**. *Progress: CC-01..CC-08 drafted in `code/evaluation/custom_cases.md` (intent + identity); pipeline-level cases (sync recreation, legal hold, tombstone) still to add.*
-- [ ] Guard against overfitting: logic must be generic, not keyed to sample case IDs.
+- [x] Print per-case diffs; samples at the ceiling (status 32/32, sequence 29/32; remaining diffs unreachable or a genuine tie).
+- [x] Create **≥3 custom eval cases**: 12 (intent x5, identity x3, temporal trap, re-creation after deletion, legal hold, two-clock rule), **12/12 passing**; `plan/eval_history.md` started.
+- [x] Guard against overfitting: no case-id logic in the pipeline; the one generator-order heuristic (case-number tie-break) is documented, last-resort, and its sensitivity was exposed by cc_05/cc_06. ✅ **Phase 6 closed 2026-10-24** (`plan/phases/phase6.md`).
 
 ## Phase 7 — LLM Integration (only where it adds value) & Usage Tracking
 

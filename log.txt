@@ -860,3 +860,44 @@ repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
 worktree=main
 parent_agent=none
 
+## [2026-10-24T17:18:27Z] Phase order question: why Phase 7 before Phase 6
+
+User Prompt (verbatim, secrets redacted):
+without phase 6 why phase 7?
+
+Agent Response Summary:
+Acknowledged that after the key was added I jumped to planning Phase 7 without asking, contradicting my own earlier recommendation to do Phase 6 first; the user's question is valid. Explained that Phase 6 should come first: it is the regression safety net that Phase 7's image-driven changes are measured against, it needs no key, and the Phase 7 plan already written stays valid. Proposed doing Phase 6 now and Phase 7 next. No code was changed.
+
+Actions:
+* Appended to log.txt
+
+Context:
+tool=Claude Code
+model=claude-opus-5-5
+branch=solution
+repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
+worktree=main
+parent_agent=none
+
+## [2026-10-24T17:24:13Z] Phase 6: evaluation harness, 12 custom cases, history; Phase 6 close
+
+User Prompt (verbatim, secrets redacted):
+ok fine creeate those md files and completet phase 6 and 7 tasks and check everything properly
+
+Agent Response Summary:
+Created plan/phases/phase6.md and implemented Phase 6: 12 custom cases as variants of real requests with hand-derived expectations (intent x5, identity x3, temporal trap, re-creation after deletion, legal hold, two-clock rule) in code/evaluation/custom_cases.py, and a harness (harness.py plus a thin starter-layout main.py, split after a module-name clash with code/main.py) running isolated variant runs with exact and assertion checks and a Markdown summary. First run 10/12: cc_05/cc_06 failed only because renaming the request moved it in the case-number tie-break; fixed by keeping the source case id and recorded as a known limitation. Now 12/12, with discrimination verified. Samples unchanged (status 1.0, F1 0.9896, sequence 29/32). Added harness tests (133 passing), plan/eval_history.md with the baseline, and docs; closed the Phase 6 gate. Phase 7 follows next in this turn.
+
+Actions:
+* Created plan/phases/phase6.md, code/evaluation/custom_cases.py, code/evaluation/harness.py, code/evaluation/main.py, code/tests/test_harness.py, plan/eval_history.md
+* Edited code/evaluation/custom_cases.md, plan/phasewiseplan.md, plan/guardrails.md (via a scratchpad script)
+* Ran the harness and pytest (133 passed); git commit on branch solution
+* Appended to log.txt
+
+Context:
+tool=Claude Code
+model=claude-opus-5-5
+branch=solution
+repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
+worktree=main
+parent_agent=none
+

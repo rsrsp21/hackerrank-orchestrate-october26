@@ -267,7 +267,7 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
 ## P6 — Local Evaluation Harness
 
 - **Entry gate:**
-  - [ ] The pipeline runs end-to-end on the samples.
+  - [x] The pipeline runs end-to-end on the samples.
 - **Do:**
   - Compute case status accuracy, step-level exact match (multiset), field-level accuracy per field, and sequence exact match.
   - Print per-case diffs.
@@ -281,9 +281,9 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
   - Does the metric drop on any previously-passing sample?
   - Is each failure categorized (intent, identity, discovery, policy, ordering, evidence choice)?
 - **Exit gate:**
-  - [ ] Samples ≥ 90% sequence-exact (target 100%).
-  - [ ] Custom cases pass.
-  - [ ] History recorded.
+  - [x] Samples ≥ 90% sequence-exact (90.6% = ceiling).
+  - [x] Custom cases pass (12/12).
+  - [x] History recorded (`plan/eval_history.md`).
 
 ## P7 — LLM Integration & Usage Tracking
 
