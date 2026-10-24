@@ -7,6 +7,7 @@ __pycache__/
 # Secrets
 .env
 .env.*
+!.env.example
 
 # Regenerable caches (may contain dataset-derived PII)
 code/cache/
