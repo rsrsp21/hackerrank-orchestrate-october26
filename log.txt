@@ -511,3 +511,26 @@ repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
 worktree=main
 parent_agent=none
 
+## [2026-10-24T16:29:48Z] LLM provider decision (Gemini), Phase 4 task 4.1, evaluator reproducibility
+
+User Prompt (verbatim, secrets redacted):
+yeah  readyto start 4.1 but are there any open questions about llm provider now?
+but how will they evaluate if we use gemini if they evaluate with other?
+
+Agent Response Summary:
+Checked the environment (no LLM API keys, .env, or SDK present) and asked the user to pick a provider: Google Gemini (GEMINI_API_KEY in an uncommitted .env; model IDs chosen in P7 by listing the available models). Implemented task 4.1, code/evidence/model.py (Observation with two-clock usable(), Coverage for absence by omission, State/Category/Directness enums, system mapping, link-key and resource-ref extraction) with 5 tests; the suite is at 79 passing. To the evaluation concern: scoring compares output.csv to hidden answers, so the provider does not affect the score; for reproducibility, LLM results are cached as structured JSON shipped in code.zip, so a clean run without any key reproduces output.csv, with a deterministic fallback and a provider-agnostic adapter. Recorded this in the plan.
+
+Actions:
+* Checked env var presence (values never printed); AskUserQuestion (provider = Gemini)
+* Created code/evidence/__init__.py, code/evidence/model.py, code/tests/test_evidence_model.py; ran pytest (79 passed)
+* Edited plan/phasewiseplan.md, plan/phases/phase4.md; git commit on branch solution
+* Appended to log.txt
+
+Context:
+tool=Claude Code
+model=claude-opus-5-5
+branch=solution
+repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
+worktree=main
+parent_agent=none
+
