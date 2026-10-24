@@ -64,7 +64,7 @@ Output: root `output.csv` → `case_id,deletion_status,steps_json`, sorted by `c
 | 2 Intent | ✅ closed | `code/intent.py`, `code/tests/test_intent.py` | 595e634 |
 | 3 Identity | ✅ closed | `code/identity.py`, `code/tests/test_identity.py`, `code/explore/identity_report.py` | 12ac405 … 7664749 |
 | 4 Evidence & state | ✅ closed | `code/evidence/*`, `code/linking.py`, `code/workflow.py`, `code/investigate.py` | 997a8f4 … 751def9 |
-| 5 Policy & steps | ▶ in progress (5.1–5.3 done) | `code/policy.py`, `code/tests/test_policy.py` | de3d507 |
+| 5 Policy & steps | ▶ in progress (5.1–5.4 done) | `code/policy.py`, `code/tests/test_policy.py` | de3d507 |
 | 6 Evaluation | ⏳ (8 custom cases drafted) | `code/evaluation/custom_cases.md` | — |
 | 7 LLM & usage | ⏳ | — | — |
 | 8 Full run & validation | ⏳ | — | — |
@@ -127,7 +127,7 @@ Deliverable: `plan/data_notes.md` with schemas, the catalogue, and sample-case e
   - ACCOUNT_TOMBSTONE → keep `user_id`, redact name/email/phone/hash.
 - [x] Status: `COMPLETE` iff zero findings; else `INCOMPLETE` (samples 32/32).
 - [x] Sort within phase: operation-table order → `system_id` → `resource_id`; renumber `step_no` from 1 (tested over all 550 cases).
-- [~] Evidence: findings + COMPLETE verifications cite IDs; INCOMPLETE remediation/verification use `""`. *Pending task 5.4: COMPLETE verifications with no citable evidence (account 11 cases, retained record 8 cases) — user decision.*
+- [x] Evidence: findings + COMPLETE verifications cite IDs; INCOMPLETE remediation/verification use `""`. *Task 5.4 user decision: account step without citable evidence kept with `""`; retained record known only post-audit omitted in COMPLETE cases.*
 - [x] Replicate sample conventions (account always verified, retained record verified present, compliant items only in COMPLETE) → **samples sequence-exact 29/32 = ceiling**.
 - [x] Serialize JSON deterministically (`sort_keys=True`, compact separators). Note: the sample file mixes key orders; the grader parses JSON, so equality is semantic. *(5.1–5.2; remaining: 5.3 scoring, 5.4 decision, 5.5 main.py + validator + output.csv)*
 

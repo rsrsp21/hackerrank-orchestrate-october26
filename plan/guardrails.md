@@ -64,7 +64,7 @@ Allowed combinations only:
 - Every remediated record or flow gets a matching verification step.
 - RETAIN categories are never deleted. They get `VERIFY_RECORD_PRESENT` where the convention requires it.
 - Tombstone gets REDACT (keep `user_id`), not DELETE.
-- `COMPLETE` ⇒ only VERIFICATION steps, all with non-empty evidence IDs.
+- `COMPLETE` ⇒ only VERIFICATION steps, all with non-empty evidence IDs — **amendment (2026-10-24, user decision in task 5.4):** (a) the account `VERIFY_RECORD_ABSENT` is always emitted, with `evidence_id=""` when no in-window evidence exists (sample convention C2: every answer verifies the account); (b) a retained record known only from post-audit evidence is **omitted** in COMPLETE cases (nothing proves it at audit_at; post-audit evidence is never cited). Implemented as `ACCOUNT_WITHOUT_EVIDENCE="empty"`, `RETAINED_WITHOUT_EVIDENCE="omit"` in `code/policy.py`.
 - `INCOMPLETE` ⇒ at least one FINDING; REMEDIATION and VERIFICATION `evidence_id == ""`.
 - `NOT_APPLICABLE` ⇒ `[]`.
 

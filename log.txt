@@ -773,3 +773,25 @@ repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
 worktree=main
 parent_agent=none
 
+## [2026-10-24T17:08:53Z] Phase 5 task 5.4: user decision on COMPLETE steps without citable evidence
+
+User Prompt (verbatim, secrets redacted):
+(answered task 5.4 questions) account step: Keep step, evidence ""; retained step: Omit the step
+
+Agent Response Summary:
+Asked the user to decide the policy for COMPLETE-case verifications with no citable in-window evidence. Decision: keep the account VERIFY_RECORD_ABSENT step with an empty evidence_id (11 eval cases; every sample verifies the account), and omit retained records known only from post-audit evidence (8 eval cases). Both match the existing policy.py defaults, so no code changed. Recorded the decision as a guardrails section 6 amendment and in constitution Art. 6.6, and ticked 5.4 in phase5.md and phasewiseplan.md.
+
+Actions:
+* AskUserQuestion (two decisions)
+* Edited plan/guardrails.md, plan/constitution.md, plan/phases/phase5.md, plan/phasewiseplan.md
+* git commit on branch solution
+* Appended to log.txt
+
+Context:
+tool=Claude Code
+model=claude-opus-5-5
+branch=solution
+repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
+worktree=main
+parent_agent=none
+

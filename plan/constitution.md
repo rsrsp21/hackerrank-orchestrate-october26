@@ -51,7 +51,7 @@ Build a terminal-runnable deletion-audit agent that, for each of the 518 request
 3. Steps: exactly the 7 fields `step_no, phase, system_id, resource_id, operation, state, evidence_id`. `step_no` starts at 1 and has no gaps.
 4. Order: phase (FINDING → REMEDIATION → VERIFICATION), then the operation order in the problem-statement table, then `system_id`, then `resource_id`, ascending.
 5. Only the allowed phase/operation/state combinations. Never invent new ones.
-6. `INCOMPLETE` remediation and verification steps use `evidence_id = ""`.
+6. `INCOMPLETE` remediation and verification steps use `evidence_id = ""`. In `COMPLETE` cases every verification cites its proof, with one user-approved exception: the account verification is kept with `""` when nothing in the case window can prove it (guardrails §6 amendment, 2026-10-24).
 7. Remediation order is safe: disable flows and block restores before changing records. Process downstream copies before their sources where there is a dependency.
 
 ## Article 7 — Determinism & Reproducibility
