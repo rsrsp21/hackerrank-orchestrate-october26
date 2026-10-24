@@ -69,7 +69,9 @@ Rules:
   - unknown email → `IdentityError`; decoy `.jr` email does not resolve to the base user
   - phone normalization equality across formats
   - `sha256_email(current email) == email_hash` for every user (850/850)
-- [ ] 3.4 Run over eval + samples: print counts (expected eval 418 current / 100 historical / 0 errors; samples 29 / 3 / 0) and the two-change chains. Check that the two cases sharing an email (case_33, case_52) resolve to the same user.
+- [x] 3.4 `code/explore/identity_report.py` (2026-10-24): eval **418 current / 100 historical / 0 errors**; samples **29 / 3 / 0** (case_10 via audit_121, case_29 via audit_284, case_30 via audit_280). Identifier-set sizes: eval 329 single-identity, 88 with 2 phones, 99 with 2 emails/hashes, 1 with 2+2, 1 with 3 emails (case_37 → user_35 chain).
+  - **Subjects with more than one request** (each audited independently at its own `audit_at`): user_18 → case_52 (audit 06-19) and case_33 (07-19); user_07 → eval case_61 (02-14) and sample case_07 (09-12); user_17 → eval case_46 (03-11) and sample case_17 (09-15). The two eval/sample pairs show the same person at different times: useful for understanding, **never** copied as answers.
+  - Email chains: user_10 (sample case_10) and user_35 (eval case_37), both resolved with all 3 emails.
 - [ ] 3.5 Cross-check against the sample walkthrough: all 32 samples resolve to the user listed in `plan/sample_walkthrough.md` §3.
 - [ ] 3.6 Update data_notes §1.4 with the final resolver semantics, and draft ≥1 custom case for Phase 6 (historical-email request where evidence exists only under the old email/hash).
 
