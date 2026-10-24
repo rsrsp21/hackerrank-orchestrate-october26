@@ -41,7 +41,7 @@ def load(manifest, links=()):
     for ef in files_under(manifest, "documents", {".pdf"}):
         text = pdf_text(ef.path)
         named = set(RESOURCE_RE.findall(text))
-        named |= {l.resource_id for l in links if l.label != l.resource_id and l.label and l.label in text}
+        named |= {link.resource_id for link in links if link.label != link.resource_id and link.label and link.label in text}
         keys = link_keys_from(text)
         for rid in sorted(named):
             category = _category(resource_prefix(rid), text)

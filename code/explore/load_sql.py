@@ -8,7 +8,6 @@ Run: uv run python code/explore/load_sql.py
 """
 
 import csv
-import hashlib
 import json
 import re
 import sqlite3

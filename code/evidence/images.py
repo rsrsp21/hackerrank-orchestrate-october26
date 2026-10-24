@@ -44,7 +44,7 @@ def _resolve(rec, links):
     if RESOURCE_RE.fullmatch(rid):
         return rid
     labels = {str(x).strip() for x in rec.get("labels", []) if x} | ({rid} if rid else set())
-    hits = sorted({l.resource_id for l in links if l.label in labels and l.label != l.resource_id})
+    hits = sorted({link.resource_id for link in links if link.label in labels and link.label != link.resource_id})
     return hits[0] if len(hits) == 1 else None
 
 

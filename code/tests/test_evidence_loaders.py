@@ -107,7 +107,7 @@ def test_activity_signals_and_catalog(ev):
     obs, _, links = ev
     assert any(o.evidence_id == "activity_3387" and o.state == State.PRESENT for o in find(obs, "search_4882"))
     assert any(o.evidence_id == "activity_3709" and o.state == State.RESTORE_ALLOWED for o in find(obs, "backup_4978"))
-    by_rid = {l.resource_id: l for l in links}
+    by_rid = {link.resource_id: link for link in links}
     assert by_rid["object_19"].exclusive and by_rid["object_19"].user_id == "user_07"
     assert by_rid["export_1842"].label == "NST-2026-0718-1842"
 

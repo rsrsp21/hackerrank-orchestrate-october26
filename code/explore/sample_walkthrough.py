@@ -25,7 +25,7 @@ RID = re.compile(r"\b(?:account|search|support|analytics|export|data_flow|backup
 
 
 def jl(name):
-    return [json.loads(l) for l in open(CACHE / name, encoding="utf-8")]
+    return [json.loads(line) for line in open(CACHE / name, encoding="utf-8")]
 
 
 def tokens(obj):

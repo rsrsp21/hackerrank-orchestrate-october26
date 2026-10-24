@@ -329,8 +329,8 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
 ## P9 — Reports & Documentation
 
 - **Entry gate:**
-  - [ ] Final P8 run done.
-  - [ ] Metrics and usage captured from that run.
+  - [x] Final P8 run done.
+  - [x] Metrics and usage captured from that run.
 - **Do:**
   - `evaluation_report.md`: metrics tables, custom cases (input, expected, actual, verdict), failure analysis, improvements timeline (from `plan/eval_history.md`).
   - `usage_report.md`: per-model and overall calls, tokens, averages, costs (state the pricing source and date).
@@ -339,14 +339,14 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
   - include secrets, PII samples, or numbers not produced by code;
   - leave placeholders.
 - **Exit gate:**
-  - [ ] Every required report bullet (AGENTS.md §6.8) is present.
-  - [ ] A fresh-clone dry run of the README instructions works.
+  - [x] Every required report bullet (AGENTS.md §6.8) is present.
+  - [x] A fresh-clone dry run of the README instructions works (P10 clean-checkout).
 
 ## P10 — Packaging & Submission
 
 - **Entry gate:**
-  - [ ] P8 and P9 exit gates met.
-  - [ ] ≥3h before 2026-10-26T00:30Z (06:00 IST).
+  - [x] P8 and P9 exit gates met.
+  - [x] ≥3h before 2026-10-26T00:30Z (06:00 IST).
 - **Do:**
   - Clean `__pycache__`.
   - Re-export `requirements.txt`.
