@@ -56,32 +56,51 @@ Output: root `output.csv` → `case_id,deletion_status,steps_json`, sorted by `c
 
 ---
 
+## Progress status (updated 2026-10-24)
+
+| Phase | Status | Key artifacts | Commit |
+|---|---|---|---|
+| 1 Exploration | ✅ closed | `code/explore/*`, `plan/data_notes.md`, `plan/sample_walkthrough.md` | 1b3c994, dbc59fc |
+| 2 Intent | ✅ closed | `code/intent.py`, `code/tests/test_intent.py` | 595e634 |
+| 3 Identity | ✅ closed | `code/identity.py`, `code/tests/test_identity.py`, `code/explore/identity_report.py` | 12ac405 … 7664749 |
+| 4 Evidence & state | ⏭ next | `plan/phases/phase4.md` (to create) | — |
+| 5 Policy & steps | ⏳ | — | — |
+| 6 Evaluation | ⏳ (8 custom cases drafted) | `code/evaluation/custom_cases.md` | — |
+| 7 LLM & usage | ⏳ | — | — |
+| 8 Full run & validation | ⏳ | — | — |
+| 9 Reports | ⏳ | — | — |
+| 10 Package & submit | ⏳ | — | — |
+
+Tests: 74 passing (`uv run python -m pytest code/tests -q`). Branch: `solution`.
+
+---
+
 ## Phase 1 — Setup & Data Exploration (understand before coding)
 
 Goal: know every data shape and every pattern in the samples.
 
-- [ ] Create Python env (`.venv` at repo root, **outside** `code/`), `requirements.txt` (pandas optional, `pdfplumber`/`pypdf`, `pytesseract` or LLM vision for PNGs, `sqlite3` stdlib).
-- [ ] Load all CSVs; print schemas, value counts of `event_type`, `source_system`, `target_system`, `reported_result`.
-- [ ] Load every SQL snapshot into in-memory SQLite; list tables/columns per file (primary vs regional/reporting/failover/read replica).
-- [ ] Extract text from all PDFs and PNGs once; cache to `code/cache/` (keep cache out of zip or regenerate).
-- [ ] Read logs/JSON/text records; identify what identifiers appear (emails, hashes, phones, `user_id`, resource IDs).
-- [ ] Walk through all 32 sample cases by hand against the evidence: for each, write down *why* each step exists and which evidence proves it. This is the reverse-engineering of the hidden logic.
-- [ ] Build a catalogue: `system_id` ↔ `resource_id` prefix ↔ `data_category` ↔ rule (e.g. `account_service/account_*` → USER_PROFILE or ACCOUNT_TOMBSTONE; `search_service/search_*` → SEARCH_INDEX_ENTRY; `analytics_platform/analytics_*` → ANALYTICS_PROFILE; `support_platform/support_*` → message vs attachment …).
+- [x] Create Python env: uv project at root (`pyproject.toml`, `uv.lock`, `.venv` outside `code/`), `code/requirements.txt` exported; pdfplumber + pymupdf; no Tesseract → PNGs via LLM vision (P7). *(task 1.1)*
+- [x] Load all CSVs and profile them → `code/explore/profile_csv.py`, data_notes §1. *(task 1.2)*
+- [x] Load all 24 SQL snapshots into in-memory SQLite; 4 families, replica drift found → `code/explore/load_sql.py`, data_notes §2. *(task 1.3)*
+- [x] Extract the 4 PDFs (`code/explore/extract_docs.py`); view and transcribe the 11 PNGs → `code/cache/extracted/*.md` (gitignored), data_notes §4. *(task 1.5)*
+- [x] Parse records (5 families) and logs (7 formats, trace joins) → `parse_records.py`, `parse_logs.py`, data_notes §3; two-clock temporal rule found. *(task 1.4)*
+- [x] Walk through all 32 sample cases → `plan/sample_walkthrough.md` (20 conventions C1–C20, linking mechanisms L1–L6, workflow-timing discovery). *(task 1.6)*
+- [x] Build a catalogue (data_notes §4b; 9 systems confirmed, 3 inferred, 2 never emitted): `system_id` ↔ `resource_id` prefix ↔ `data_category` ↔ rule (e.g. `account_service/account_*` → USER_PROFILE or ACCOUNT_TOMBSTONE; `search_service/search_*` → SEARCH_INDEX_ENTRY; `analytics_platform/analytics_*` → ANALYTICS_PROFILE; `support_platform/support_*` → message vs attachment …).
 
-Deliverable: `plan/data_notes.md` with schemas, the catalogue, and sample-case explanations.
+Deliverable: `plan/data_notes.md` with schemas, the catalogue, and sample-case explanations. ✅ **Phase 1 closed 2026-10-24** (`plan/phases/phase1.md`).
 
 ## Phase 2 — Request Classification (NOT_APPLICABLE detection)
 
-- [ ] Classify `request_text` (multilingual) into: deletion vs non-deletion (access, export, correction, marketing opt-out, etc.).
-- [ ] Approach: keyword/rule baseline + LLM fallback for ambiguous/non-English texts (cheap model, batched, cached by text hash).
-- [ ] Hand-label ~30 eval request texts to sanity-check (they are inputs, not golden answers).
+- [x] Classify `request_text` (multilingual) → `code/intent.py`: eval 508 DELETION / 10 NOT_APPLICABLE / 0 UNSURE; samples 32/32. *(tasks 2.1–2.3)*
+- [~] Approach: rule baseline done (override cues → deletion cues outside boilerplate → non-deletion topics → UNSURE). LLM fallback for UNSURE deferred to Phase 7 (0 UNSURE today).
+- [x] Sanity check: all 17 intent sentences + all 10 non-deletion texts catalogued and unit-tested (60 tests); CLASSIFY_REQUEST corroborates 10/10. ✅ **Phase 2 closed 2026-10-24** (`plan/phases/phase2.md`).
 
 ## Phase 3 — Identity Resolution
 
-- [ ] Map request `email` → `user_id` via current snapshot **or** any historical value in `user_audit_log.csv` (match old/new email).
-- [ ] Build full identifier set per user: all names, emails, phones, sha256(email) for every email (verify the hash scheme matches `email_hash`), plus `user_id`.
-- [ ] Respect time: identifiers valid before `audit_at` (history after `audit_at` must not be used).
-- [ ] Normalize: lowercase emails, strip phone formatting, Unicode name normalization.
+- [x] Map request `email` → `user_id` → `code/identity.py` (`IdentityResolver`): eval 418 current / 100 historical / 0 errors; samples 29/3/0; 32/32 equal to the walkthrough. *(tasks 3.1, 3.4, 3.5)*
+- [x] Build the full identifier set per user (emails, sha256 hashes computed and audit-recorded, digits-only phones, user_id; names kept but never linked). The hash scheme is verified 850/850.
+- [x] Respect time: as_of-aware value sets; a bug for emails changed after as_of was found by tests and fixed. *(task 3.3, 74 tests)*
+- [x] Normalize: shared `norm_email` / `norm_phone` / `extract_emails` / `sha256_email` / `is_sha256` for Phase 4 linking. ✅ **Phase 3 closed 2026-10-24** (`plan/phases/phase3.md`).
 
 ## Phase 4 — Evidence Indexing & Resource State Reconstruction (core)
 
@@ -117,7 +136,7 @@ Deliverable: `plan/data_notes.md` with schemas, the catalogue, and sample-case e
 - [ ] `code/evaluation/main.py`: run pipeline on the 32 samples, compare to `sample_output.csv`.
 - [ ] Metrics: case status accuracy; step-level exact match; field-level accuracy (system_id, resource_id, operation, state, evidence_id); sequence accuracy (exact array match).
 - [ ] Print per-case diffs; iterate Phases 3–5 until samples are ~100%.
-- [ ] Create **≥3 custom eval cases** (e.g. non-deletion request in another language, historical-email request, sync recreating deleted data, legal-hold retain, tombstone) with hand-derived expected outputs.
+- [ ] Create **≥3 custom eval cases**. *Progress: CC-01..CC-08 drafted in `code/evaluation/custom_cases.md` (intent + identity); pipeline-level cases (sync recreation, legal hold, tombstone) still to add.*
 - [ ] Guard against overfitting: logic must be generic, not keyed to sample case IDs.
 
 ## Phase 7 — LLM Integration (only where it adds value) & Usage Tracking
