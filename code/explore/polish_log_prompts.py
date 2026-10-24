@@ -1,4 +1,4 @@
-"""One-off: rewrite User Prompt sections in log.txt to technical paraphrases."""
+"""DEPRECATED: AGENTS.md requires verbatim user prompts. Do not run on submission log.txt."""
 from __future__ import annotations
 
 import re
