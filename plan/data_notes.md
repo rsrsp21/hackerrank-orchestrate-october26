@@ -307,6 +307,30 @@ The PDFs were extracted with `code/explore/extract_docs.py` (pdfplumber; text an
 
 ---
 
+## 4b. Final catalogue (task 1.7): system → category → operations
+
+✔ = confirmed by sample outputs; ◇ = inferred from rules + evidence (no sample).
+
+| system_id (as emitted) | resource prefix | evidence sources | category → rule | non-compliant state → FINDING / REMEDIATION / VERIFICATION | compliant state → COMPLETE verification | status |
+|---|---|---|---|---|---|---|
+| account_service | account | SQL profiles (incl. replica tables), profile_lookups 200/404, ledgers USER_PROFILE, log profile lookups, empty snapshots | USER_PROFILE → 01 DELETE | present (any table/replica) → REMAINING / DELETE / ABSENT | absent → VERIFY_RECORD_ABSENT (always emitted, C2) | ✔ |
+| search_service | search | SQL/bundle search docs, index_queries, log index hits, ledgers SEARCH_INDEX_ENTRY, search_documents_primary | SEARCH_INDEX_ENTRY → 03 DELETE | present → REMAINING / DELETE / ABSENT | (absent → not listed unless remediated; no COMPLETE sample shows search) | ✔ |
+| analytics_platform | analytics | analytics reports/profiles, log analytics reads and scans, ledgers | ANALYTICS_PROFILE → 07 ANONYMIZE; **keyed only by an old identifier (contact lookup by hash) → DELETE** (C18) | identifiable → EXPOSED_PII / ANONYMIZE / ANONYMIZED; contact-hash record → REMAINING / DELETE / ABSENT | all identifiers null → VERIFY_RECORD_ANONYMIZED | ✔ |
+| support_platform | support | conversations, tickets, attachments, pii scans, support_replica log, ledgers SUPPORT_MESSAGE / SUPPORT_ATTACHMENT, PDF attachment | SUPPORT_MESSAGE → 05 REDACT; SUPPORT_ATTACHMENT / subject-only contact record → 06 DELETE | message identifiable → EXPOSED_PII / REDACT / REDACTED; attachment or contact present → REMAINING / DELETE / ABSENT | message `[REDACTED]` / no identifiers → VERIFY_RECORD_REDACTED | ✔ |
+| export_service | export | export jobs/exports (owner_email), export download logs, ledgers USER_EXPORT, export console image, statement PDF | USER_EXPORT → 09 DELETE | present/available → REMAINING / DELETE / ABSENT | — | ✔ |
+| integration_service | data_flow | connector configs/subscriptions (enabled), heartbeats, ledgers DATA_FLOW, connector console image, CHECK_DATA_FLOW activity | data flow (no rule row) | enabled/ACTIVE → ACTIVE_DATA_FLOW / DISABLE / DISABLED | enabled=false/DISABLED → VERIFY_DATA_FLOW_DISABLED | ✔ |
+| backup_service | backup | backup catalog / restore entries (restore_allowed), restore logs, ledgers BACKUP_ARCHIVE, backup console image, CHECK_RESTORE_ACCESS activity | BACKUP_ARCHIVE → 14 RETAIN + block | restorable/ACTIVE → RESTORE_RISK / BLOCK_RESTORE / RESTORE_BLOCKED | restore_allowed=false/BLOCKED/deny → VERIFY_RESTORE_BLOCKED | ✔ |
+| security_service | audit_record | audit events/records, audit reads, ledgers SECURITY_AUDIT_LOG, Sentinel image, compliance PDF | SECURITY_AUDIT_LOG → 12 RETAIN | — (never remediated) | present → VERIFY_RECORD_PRESENT (COMPLETE: cited; INCOMPLETE: "") | ✔ |
+| identity_service | tombstone | deleted_customer_references, reference-registry image, catalog link | ACCOUNT_TOMBSTONE → 15 REDACT | any of name/email/phone/hash → EXPOSED_PII / REDACT / REDACTED | all null → VERIFY_RECORD_REDACTED | ✔ |
+| legal_service | legal_hold | retained_order_records, retained_order_loaded log, ledgers LEGAL_HOLD_RECORD, legal register PDF (no IDs) | LEGAL_HOLD_RECORD → 13 RETAIN | — | present → VERIFY_RECORD_PRESENT | ◇ (no sample) |
+| marketing_platform | marketing | evidence_60 screenshot + activity_4008 only | MARKETING_PROFILE → 10 DELETE | present → REMAINING / DELETE / ABSENT | — | ◇ (Q9) |
+| object_storage | object | evidence_46 screenshot + activity_4007 only | SUPPORT_ATTACHMENT → 06 DELETE ("belongs only to the subject") | present → REMAINING / DELETE / ABSENT | — | ◇ |
+| cache_service | cache | **activity only** (REFRESH_CACHE), no state evidence | CACHE_ENTRY → 04 DELETE | not groundable → do not emit | — | ◇ never emitted |
+| email_delivery_service | email_delivery | **activity only** (SEND_EMAIL) | EMAIL_DELIVERY_LOG → 11 REDACT | not groundable → do not emit | — | ◇ never emitted |
+| (account_replication_cluster, account_failover_replica) | account | activity SYNC only | — | replica rows are reported as `account_service` (C12) | — | ✔ (via case_05/16) |
+
+---
+
 ## 5. Open questions
 - **Q1.** Output sort is numeric vs lexicographic `case_id`. Using numeric (matches the input file); the grader most likely joins on `case_id`.
 - **Q2.** ~~Which time is the cutoff?~~ Tentatively resolved in §3.1: an observation is usable iff `file.captured_at <= audit_at` and `observation_time <= audit_at`; activity uses `event_time <= audit_at`. Validate on the samples (1.6).

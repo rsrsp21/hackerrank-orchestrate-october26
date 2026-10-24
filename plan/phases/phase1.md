@@ -83,8 +83,16 @@ Packaging note: `code.zip` ships `code/requirements.txt`. Also add `pyproject.to
 - [x] Linking mechanisms L1–L6. **Workflow timing (L5)** is the only link for identifier-less absent or anonymized records: the account DELETE sits 0–75 min before reported_at, with reported_result ↔ reported_status. Only 207/550 requests have a unique candidate, so P4 needs joint assignment.
 - [x] Q2, Q4/Q7, Q5/Q8, and Q6 resolved; new Q11 (workflow collisions); Q9 and Q10 remain (eval-only).
 
-### 1.7 Mapping catalogue
-Build `system_id` → `resource_id` prefix → `data_category` → `rule_id` → (finding op, remediation op, verification op).
+### 1.7 Mapping catalogue ✅ (done 2026-10-24; data_notes §4b)
+- [x] Every system_id in the sample outputs mapped and confirmed (9 systems ✔). Unseen systems are marked inferred (legal_service, marketing_platform, object_storage) or never emitted (cache_service and email_delivery_service have activity claims only, with no state evidence).
+
+## Phase 1 exit gate ✅ (2026-10-24)
+- [x] All 94 evidence files profiled: 24 SQL (load_sql.py), 29 records (parse_records.py), 26 logs (parse_logs.py), 4 PDFs (extract_docs.py), 11 PNGs viewed.
+- [x] `plan/sample_walkthrough.md` explains all 32 samples.
+- [x] Catalogue confirmed against the samples (data_notes §4b).
+- [x] Conventions written: evidence selection (C8), account verification (C2), tombstone (C19), retain-verify (C3), flow and restore (C15, C16).
+- [x] Open questions listed with resolution phases: Q9, Q10, Q11 → P4.
+- Committed on branch `solution` (1b3c994) + this closing commit.
 
 ---
 

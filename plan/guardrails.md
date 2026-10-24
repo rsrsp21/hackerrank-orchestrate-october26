@@ -155,11 +155,11 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
   - Does each SQL file's table and column list exist in `data_notes.md`?
   - Have the temporal traps (files after a sample's `audit_at`) been identified?
 - **Exit gate:**
-  - [ ] All 94 evidence files profiled.
-  - [ ] `plan/sample_walkthrough.md` explains all 32 samples.
-  - [ ] The system→category→operations catalogue is confirmed against the samples.
-  - [ ] Conventions written: evidence selection, account verification, tombstone, retain-verify, flow and restore.
-  - [ ] Open questions listed, each with a planned resolution phase.
+  - [x] All 94 evidence files profiled.
+  - [x] `plan/sample_walkthrough.md` explains all 32 samples.
+  - [x] The system→category→operations catalogue is confirmed against the samples.
+  - [x] Conventions written: evidence selection, account verification, tombstone, retain-verify, flow and restore.
+  - [x] Open questions listed, each with a planned resolution phase.
 - **Artifacts:** `code/explore/*.py`, `plan/data_notes.md`, `plan/sample_walkthrough.md`, `code/cache/extracted/`.
 
 ### P1 task-specific
