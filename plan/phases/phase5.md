@@ -13,7 +13,7 @@
 ## 2. Facts this phase relies on
 | Fact | Source |
 |---|---|
-| Sample JSON style: keys sorted alphabetically, compact separators `,` `:`, standard CSV quoting (`""` inside quoted field) | `dataset/sample_output.csv` |
+| Sample JSON style: compact separators `,` `:`, standard CSV quoting (`""` inside quoted field); **key order varies between rows** (grader ignores it) | `dataset/sample_output.csv` |
 | Eval status mix (pre-image-facts): 346 INCOMPLETE / 162 COMPLETE / 10 NOT_APPLICABLE | investigation_report.py |
 | Compliant (already-treated) items occur **only** in COMPLETE cases: 124 anonymized analytics, 36 redacted support, 36 disabled flows, 36 blocked backups, 5 redacted tombstones; **no** non-account ABSENT items | phase-5 check |
 | COMPLETE cases with no citable evidence: account in 11 cases (9 image-dependent + 126, 127); retained audit record in 8 cases | phase-4/5 checks |
@@ -54,8 +54,8 @@ FINDING: REMAINING, EXPOSED_PII, ACTIVE_DATA_FLOW, RESTORE_RISK · REMEDIATION: 
 Header; 518 rows equal to the input case set; numeric sort; no duplicates; status vocabulary; JSON array of objects with exactly the 7 keys; consecutive step_no; phase order; within-phase sort order; allowed operation/state pairs; NOT_APPLICABLE ⇔ `[]`; COMPLETE ⇒ verification-only; INCOMPLETE ⇒ ≥1 finding and empty evidence on remediation/verification; every cited evidence id exists (file_id / activity_id / audit_id) and is dated ≤ the case's audit_at.
 
 ## 4. Tasks
-- [ ] 5.1 `code/policy.py`: tables, `steps_for(investigation)` → list[dict], `serialize(steps)`. Pure functions.
-- [ ] 5.2 `code/tests/test_policy.py`: op/state pairs, ordering (case_11 / case_18 full sequences), no duplicate account step, COMPLETE verification-only, NOT_APPLICABLE `[]`, JSON byte-equality with the sample serialization for an identical step list.
+- [x] 5.1 `code/policy.py` (2026-10-24): ACTION_STEPS / COMPLIANT_VERIFICATION / OPERATION_ORDER tables, explicit ALLOWED (15 pairs = problem statement), `steps_for(inv)`, `serialize()`. 5.4 policy knobs present with the recommended defaults (account without evidence → keep with ""; retained without evidence → omit), pending the user decision. **Samples: sequence exact 29/32 = ceiling** (diffs only cases 18, 20 unreachable, 23 tie).
+- [x] 5.2 `code/tests/test_policy.py` (8 tests): allowed pairs, NOT_APPLICABLE `[]`, INCOMPLETE structure + empty evidence + flow-before-delete order, no duplicate account step, COMPLETE verification-only with evidence, every emitted pair allowed and sorted over all 550 cases, samples sequence-exact except the 3 known, compact sorted JSON round-trip. **Correction:** the sample file mixes JSON key orders (only 8/32 rows are byte-identical to sorted-key output), so equality is semantic (the grader parses JSON). Suite: 126 passed.
 - [ ] 5.3 Sample scoring script `code/evaluation/score.py` (the seed of the P6 harness): status accuracy, step-level exact match (multiset), field-level accuracy per field, sequence exact match, per-case diff. Run on the 32 samples.
 - [ ] 5.4 **Decision with the user:** policy for COMPLETE steps lacking citable evidence (§3.2 rule 7). Record it in the constitution/guardrails if the rule changes.
 - [ ] 5.5 `code/main.py` + `code/validate_output.py`; generate root `output.csv`; the validator passes; two runs byte-identical.
