@@ -1,0 +1,22 @@
+# Python / uv
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Secrets
+.env
+.env.*
+
+# Regenerable caches (may contain dataset-derived PII)
+code/cache/
+
+# Build / submission artifacts
+code.zip
+*.zip
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
