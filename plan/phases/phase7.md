@@ -51,14 +51,14 @@ Per model and overall: live calls, cache hits, input tokens, output tokens, tota
 - [x] 7.4 Pipeline rerun: **samples unchanged** (status 1.0000, step F1 0.9896, sequence 0.9062), custom cases 12/12, validator green. Eval changes confined to the 10 image scenarios (34, 35, 39, 45, 46, 50, 52, 53, 55, 61): status COMPLETE 162 → 154, INCOMPLETE 346 → 354. COMPLETE cases without citable account evidence 11 → 3 (45, 126, 127). Q9 rule fires: marketing_001 dropped for case_63 ("catalog link contradicted by the record's own identifiers"). Checked and rejected a "retained audit record needs a supplied retention period" rule: 12 of 24 sample-expected audit records have no retention-bearing evidence. So case_45 verifies all 6 audit records of user_03 (known uncertainty: the samples only ever show one per subject).
 - [x] 7.5 `intent.classify_with_fallback` + `code/prompts/intent_fallback.md`: only UNSURE texts are sent (0 in eval today); invalid or absent answers keep the deterministic default; wired through `investigate_all(..., llm=)`. Test with a fake client.
 - [x] 7.6 Reproducibility: keyed run, keyless run (`GEMINI_API_KEY=`), and `--no-llm` produce **byte-identical** output.csv (sha256 0d80a7d4bad67187…). Keyed re-run made **0 live calls** (facts and answers come from the committed cache).
-- [~] 7.7 Usage captured (`code/llm_cache/usage_last_run.json`): the final output relies on 11 cached `gemini-4-argon` image-facts answers = **22,576 input + 3,943 output tokens**; total spent during development including the superseded v1 extraction = 44,899 input + 9,502 output tokens. **Pending: per-token prices for gemini-4-argon from the user** (not guessed) for the cost estimate.
+- [x] 7.7 Usage captured (`code/llm_cache/usage_last_run.json`): the final output relies on 11 cached `gemini-4-argon` image-facts answers = **22,576 input + 3,943 output tokens**; total spent during development including the superseded v1 extraction = 44,899 input + 9,502 output tokens. **Prices (user-provided, 2026-10-24): $2 / 1M input, $10 / 1M output tokens** → final output **$0.084582** total, **$0.000163 per request** (51.2 tokens/request over 518 requests); all 22 development calls $0.184818. Prices live in `.env` / `.env.example` (`LLM_PRICE_*_PER_MTOK`); `usage_last_run.json` now includes `cost_usd`.
 - [x] 7.8 Plans/notes updated; committed (`code/llm_cache/` included, `.env` never).
 
 ## 4. Exit gate
 - [x] 11/11 image facts files present and valid; fixture agreement 11/11.
 - [x] Samples unchanged (status 32/32, sequence 29/32); validator green; deterministic.
 - [x] Keyless run byte-identical; keyed re-run makes 0 new calls.
-- [~] Usage numbers captured; cost estimate waits for the user's prices. Tests green (152); committed.
+- [x] Usage numbers and cost captured; tests green (152); committed.
 
 ## 5. Guardrail reminders
 - The LLM extracts **facts**; it never decides findings, steps, or evidence ids.

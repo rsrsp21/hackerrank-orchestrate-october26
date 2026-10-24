@@ -15,6 +15,7 @@ the committed cache only, so it reproduces the same output. Usage is written to 
 import argparse
 import csv
 import json
+import os
 import shutil
 import sys
 import time
@@ -44,7 +45,12 @@ def usage_summary(llm, requests_count):
         t["answers"] += 1
         t["input_tokens"] += c["usage"]["input_tokens"]
         t["output_tokens"] += c["usage"]["output_tokens"]
+    price_in = float(os.environ.get("LLM_PRICE_INPUT_PER_MTOK", "0") or 0)
+    price_out = float(os.environ.get("LLM_PRICE_OUTPUT_PER_MTOK", "0") or 0)
+    for v in by_task.values():
+        v["cost_usd"] = round(v["input_tokens"] / 1e6 * price_in + v["output_tokens"] / 1e6 * price_out, 6)
     return {"requests": requests_count, "this_run": llm.meter.summary(),
+            "prices_usd_per_mtok": {"input": price_in, "output": price_out},
             "cached_answers": [{"provider": p, "model": m, "task": t, **v} for (p, m, t), v in sorted(by_task.items())]}
 
 

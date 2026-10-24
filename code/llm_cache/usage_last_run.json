@@ -2,6 +2,7 @@
   "cached_answers": [
     {
       "answers": 11,
+      "cost_usd": 0.084582,
       "input_tokens": 22576,
       "model": "gemini-4-argon",
       "output_tokens": 3943,
@@ -9,6 +10,10 @@
       "task": "image_facts"
     }
   ],
+  "prices_usd_per_mtok": {
+    "input": 2.0,
+    "output": 10.0
+  },
   "requests": 518,
   "this_run": []
 }
