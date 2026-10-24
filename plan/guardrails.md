@@ -309,7 +309,7 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
 ## P8 — Full Run & Output Validation
 
 - **Entry gate:**
-  - [ ] P6 exit gate met (or waived and logged).
+  - [x] P6 exit gate met.
 - **Do:**
   - Back up the previous `output.csv` to `code/cache/output_prev.csv`.
   - Run `uv run python code/main.py` clean.
@@ -321,10 +321,10 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
   - submit when the validator fails;
   - skip the determinism check (run twice → identical hash).
 - **Exit gate:**
-  - [ ] Validator passes.
-  - [ ] Two runs are byte-identical.
-  - [ ] Status distribution printed and plausible.
-  - [ ] Committed.
+  - [x] Validator passes.
+  - [x] Two runs are byte-identical (plus keyless and --no-llm).
+  - [x] Status distribution printed and plausible (154 / 354 / 10).
+  - [x] Committed.
 
 ## P9 — Reports & Documentation
 

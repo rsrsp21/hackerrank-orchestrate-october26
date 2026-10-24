@@ -1010,3 +1010,26 @@ repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
 worktree=main
 parent_agent=none
 
+## [2026-10-24T17:46:55Z] Phase 8: final run, validation, 21 manual spot checks; Phase 8 close
+
+User Prompt (verbatim, secrets redacted):
+create phase 8 md and complete it
+
+Agent Response Summary:
+Created plan/phases/phase8.md and completed it. 8.1: clean run plus validator VALID; run 1, run 2, keyless, --no-llm, and the previous committed output are all byte-identical (sha256 0d80a7d4bad67187). 8.2: 152 tests pass; harness samples at the ceiling, custom 12/12. 8.3: output profile (154/354/10, findings and remediations paired 367/367, 64 evidence ids, 62 non-ASCII texts). 8.4: built code/explore/spot_check.py and manually verified 21 eval cases against raw evidence (NOT_APPLICABLE, Portuguese/Korean, historical emails including a 3-email chain, image scenarios, the trap row, tombstones, legal hold, replica drift, restore risk, flows, large COMPLETE, tie-break, no-evidence account, the shared-subject pair): 21/21 correct, no defect. 8.5: froze output.csv and recorded the hash; closed the gate.
+
+Actions:
+* Created plan/phases/phase8.md, code/explore/spot_check.py
+* Ran main.py (x4 variants), the validator, pytest, the harness, the profile, and 21 spot checks
+* Edited plan/phases/phase8.md, plan/phasewiseplan.md, plan/guardrails.md (via a scratchpad script)
+* git commit on branch solution
+* Appended to log.txt
+
+Context:
+tool=Claude Code
+model=claude-opus-5-5
+branch=solution
+repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
+worktree=main
+parent_agent=none
+

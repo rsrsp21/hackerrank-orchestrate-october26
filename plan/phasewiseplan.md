@@ -67,7 +67,7 @@ Output: root `output.csv` → `case_id,deletion_status,steps_json`, sorted by `c
 | 5 Policy & steps | ✅ closed | `code/policy.py`, `code/main.py`, `code/validate_output.py`, `code/evaluation/score.py`, root `output.csv` | de3d507 … (Phase 5 close) |
 | 6 Evaluation | ✅ closed | `code/evaluation/{harness,main,custom_cases,score}.py`, `plan/eval_history.md` | (Phase 6 close) |
 | 7 LLM & usage | ✅ closed | `code/llm.py`, `code/image_extract.py`, `code/prompts/*`, `code/llm_cache/` | (Phase 7 close) |
-| 8 Full run & validation | ⏳ (validator + first valid output already done in P5) | `code/validate_output.py` | — |
+| 8 Full run & validation | ✅ closed (21/21 spot checks) | `output.csv` sha256 0d80a7d4bad67187…, `code/explore/spot_check.py` | (Phase 8 close) |
 | 9 Reports | ⏳ | — | — |
 | 10 Package & submit | ⏳ | — | — |
 
