@@ -64,14 +64,14 @@ Output: root `output.csv` → `case_id,deletion_status,steps_json`, sorted by `c
 | 2 Intent | ✅ closed | `code/intent.py`, `code/tests/test_intent.py` | 595e634 |
 | 3 Identity | ✅ closed | `code/identity.py`, `code/tests/test_identity.py`, `code/explore/identity_report.py` | 12ac405 … 7664749 |
 | 4 Evidence & state | ✅ closed | `code/evidence/*`, `code/linking.py`, `code/workflow.py`, `code/investigate.py` | 997a8f4 … 751def9 |
-| 5 Policy & steps | ▶ in progress (5.1–5.2 done) | `code/policy.py`, `code/tests/test_policy.py` | de3d507 |
+| 5 Policy & steps | ▶ in progress (5.1–5.3 done) | `code/policy.py`, `code/tests/test_policy.py` | de3d507 |
 | 6 Evaluation | ⏳ (8 custom cases drafted) | `code/evaluation/custom_cases.md` | — |
 | 7 LLM & usage | ⏳ | — | — |
 | 8 Full run & validation | ⏳ | — | — |
 | 9 Reports | ⏳ | — | — |
 | 10 Package & submit | ⏳ | — | — |
 
-Tests: 126 passing (`uv run python -m pytest code/tests -q`). Branch: `solution`.
+Tests: 128 passing (`uv run python -m pytest code/tests -q`). Branch: `solution`.
 
 ---
 
@@ -133,8 +133,8 @@ Deliverable: `plan/data_notes.md` with schemas, the catalogue, and sample-case e
 
 ## Phase 6 — Local Evaluation Harness
 
-- [ ] `code/evaluation/main.py`: run pipeline on the 32 samples, compare to `sample_output.csv`.
-- [ ] Metrics: case status accuracy; step-level exact match; field-level accuracy (system_id, resource_id, operation, state, evidence_id); sequence accuracy (exact array match).
+- [~] `code/evaluation/main.py`: run pipeline on the 32 samples, compare to `sample_output.csv`. *Scoring core done early in task 5.3 (`code/evaluation/score.py`); the full harness with custom cases is Phase 6.*
+- [x] Metrics: case status accuracy; step-level P/R/F1 (multiset); field-level accuracy (all 7 fields); sequence exact → `score.py` (samples: status 1.000, step F1 0.990, sequence 0.906).
 - [ ] Print per-case diffs; iterate Phases 3–5 until samples are ~100%.
 - [ ] Create **≥3 custom eval cases**. *Progress: CC-01..CC-08 drafted in `code/evaluation/custom_cases.md` (intent + identity); pipeline-level cases (sync recreation, legal hold, tombstone) still to add.*
 - [ ] Guard against overfitting: logic must be generic, not keyed to sample case IDs.
