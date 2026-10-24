@@ -66,7 +66,7 @@ Output: root `output.csv` → `case_id,deletion_status,steps_json`, sorted by `c
 | 4 Evidence & state | ✅ closed | `code/evidence/*`, `code/linking.py`, `code/workflow.py`, `code/investigate.py` | 997a8f4 … 751def9 |
 | 5 Policy & steps | ✅ closed | `code/policy.py`, `code/main.py`, `code/validate_output.py`, `code/evaluation/score.py`, root `output.csv` | de3d507 … (Phase 5 close) |
 | 6 Evaluation | ⏳ (8 custom cases drafted) | `code/evaluation/custom_cases.md` | — |
-| 7 LLM & usage | ⏳ | — | — |
+| 7 LLM & usage | ▶ planned (key set, gemini-4-argon verified) | `plan/phases/phase7.md` | — |
 | 8 Full run & validation | ⏳ (validator + first valid output already done in P5) | `code/validate_output.py` | — |
 | 9 Reports | ⏳ | — | — |
 | 10 Package & submit | ⏳ | — | — |
