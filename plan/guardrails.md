@@ -210,8 +210,8 @@ Gate protocol: before starting a phase, state in your reply which entry-gate ite
   - Samples: 32/32.
   - The two cases sharing one email resolve consistently.
 - **Exit gate:**
-  - [ ] Resolution counts printed and matching expectations.
-  - [ ] Unit tests for current, historical, and post-`audit_at` change cases.
+  - [x] Resolution counts printed and matching expectations.
+  - [x] Unit tests for current, historical, and post-`audit_at` change cases.
 
 ## P4 — Evidence Indexing & State Reconstruction
 

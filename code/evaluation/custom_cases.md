@@ -41,3 +41,25 @@ Status legend: **drafted** (expected output written) → **automated** (in the h
 ---
 
 Pipeline-level custom cases (historical email, temporal cut-off, tombstone, legal hold, restore risk) are added in Phase 6 with full expected `steps_json`.
+
+---
+
+## Identity cases (Phase 3)
+
+### CC-06: identity invariance, current email of a sample subject that was requested via the old email
+- **Input:** `case_id=cc_06, email=noah.f4380@outlook.com` (user_29's **current** email), with every other field copied from sample case_29 (`requested_at 2026-08-27T12:00:00Z, reported_status NOT_STARTED, reported_at 2026-08-30T12:00:00Z, audit_at 2026-09-15T12:00:00Z`) and the same request text.
+- **Expected:** the subject resolves to user_29 (`match=current`), and the output is **identical** to sample case_29's expected answer (14 steps: search_1993, analytics_5208, support_5281, data_flow_3827 findings; account_7012; audit_record_3954).
+- **Why:** the answer must depend on *who* the subject is, not on which of their emails was used. Evidence in case_29 exists only under the old email, so this checks that the identifier set carries historical emails into evidence linking.
+- Status: drafted (identity part verified: resolves to user_29 current); full-pipeline check in Phase 6.
+
+### CC-07: historical email given in different letter case
+- **Input:** `email=Camille.Bernard86@Outlook.com` (user_30's old email in mixed case), other fields copied from sample case_30.
+- **Expected:** resolves to user_30 (`match=historical`, `audit_280`); output identical to sample case_30's expected answer.
+- **Why:** emails in requests and evidence appear in arbitrary case (UPPERCASE rows exist in SQL and ledgers), so normalization must be applied consistently.
+- Status: drafted (identity part verified); full-pipeline check in Phase 6.
+
+### CC-08: identity change after audit_at (synthetic)
+- **Input:** a synthetic user whose email changes on 2026-05-01. Requests use the *old* email with `audit_at` 2026-04-01 and with `audit_at` 2026-07-01.
+- **Expected:** both resolve to the same user. At 2026-04-01 the match is `current` and the identifier set excludes the new email/hash/phone. At 2026-07-01 the match is `historical` and both emails are included. A request with the *new* email and `audit_at` 2026-04-01 must **not** resolve.
+- **Why:** temporal correctness of identity (no identity change postdates an audit in the public data, but hidden tests may contain one).
+- Status: automated as unit tests `test_change_after_as_of_is_excluded` / `test_change_before_as_of_is_included` (passing).

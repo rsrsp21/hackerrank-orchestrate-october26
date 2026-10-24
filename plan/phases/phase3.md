@@ -72,15 +72,15 @@ Rules:
 - [x] 3.4 `code/explore/identity_report.py` (2026-10-24): eval **418 current / 100 historical / 0 errors**; samples **29 / 3 / 0** (case_10 via audit_121, case_29 via audit_284, case_30 via audit_280). Identifier-set sizes: eval 329 single-identity, 88 with 2 phones, 99 with 2 emails/hashes, 1 with 2+2, 1 with 3 emails (case_37 → user_35 chain).
   - **Subjects with more than one request** (each audited independently at its own `audit_at`): user_18 → case_52 (audit 06-19) and case_33 (07-19); user_07 → eval case_61 (02-14) and sample case_07 (09-12); user_17 → eval case_46 (03-11) and sample case_17 (09-15). The two eval/sample pairs show the same person at different times: useful for understanding, **never** copied as answers.
   - Email chains: user_10 (sample case_10) and user_35 (eval case_37), both resolved with all 3 emails.
-- [ ] 3.5 Cross-check against the sample walkthrough: all 32 samples resolve to the user listed in `plan/sample_walkthrough.md` §3.
-- [ ] 3.6 Update data_notes §1.4 with the final resolver semantics, and draft ≥1 custom case for Phase 6 (historical-email request where evidence exists only under the old email/hash).
+- [x] 3.5 Cross-check (in `identity_report.py`): **32/32** sample subjects and match types equal `plan/sample_walkthrough.md` §3.
+- [x] 3.6 data_notes §1.4 updated with the final resolver semantics; custom cases CC-06 (current-email invariance for case_29), CC-07 (mixed-case historical email, case_30), CC-08 (synthetic post-audit change; automated as unit tests) added to `code/evaluation/custom_cases.md`.
 
-## 5. Exit gate
-- [ ] `code/identity.py` + tests exist; `uv run python -m pytest code/tests -q` all green (intent + identity).
-- [ ] Resolution counts printed and equal to expectations (eval 418/100/0, samples 29/3/0).
-- [ ] 32/32 sample subjects match the walkthrough.
-- [ ] Unit tests cover current, historical, and post-`as_of` change cases.
-- [ ] Committed.
+## 5. Exit gate ✅ (2026-10-24)
+- [x] `code/identity.py` + tests exist; `uv run python -m pytest code/tests -q` → 74 passed.
+- [x] Resolution counts equal expectations (eval 418/100/0, samples 29/3/0).
+- [x] 32/32 sample subjects match the walkthrough.
+- [x] Unit tests cover current, historical, and post-`as_of` change cases.
+- [x] Committed.
 
 ## 6. Guardrail reminders
 - Exact identifiers only: email (normalized), hash, phone (digits), user_id. **No fuzzy or name matching.**

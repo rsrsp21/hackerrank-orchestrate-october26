@@ -6,6 +6,7 @@ Run: uv run python code/explore/identity_report.py
 """
 
 import csv
+import re
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -44,6 +45,14 @@ def main():
     for user_id, reqs in sorted(by_user.items()):
         if len(reqs) > 1:
             print(f"  {user_id}: {reqs}")
+
+    print("\n=== task 3.5: sample subjects vs plan/sample_walkthrough.md §3")
+    table = (ROOT / "plan" / "sample_walkthrough.md").read_text(encoding="utf-8")
+    expected = {f"case_{m.group(1)}": (m.group(2), m.group(3)) for m in
+                re.finditer(r"^\| (\d\d) \| (user_\d+) \(\**(current|historical)", table, re.M)}
+    got = {c: (u, match) for u, reqs in by_user.items() for c, _, match, _, _ in reqs if c in expected}
+    bad = {c: (expected[c], got.get(c)) for c in expected if got.get(c) != expected[c]}
+    print(f"  walkthrough rows: {len(expected)}; matching: {len(expected) - len(bad)}; mismatches: {bad or 'none'}")
 
     print("\n=== users with more than one email change")
     chains = Counter(a["user_id"] for a in audit if a["field_name"] == "email")

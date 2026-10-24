@@ -39,6 +39,7 @@ Living findings document for Phase 1. Source scripts: `code/explore/`. Uses IDs 
 - 196 users have history, at most 4 changes per user. The newest `new_value` always equals the current snapshot.
 - **Historical identifier set** = every `old_value` and `new_value` per user, plus the current snapshot. Hashes in the history give the old email hashes directly.
 - Duplicate names: 3 pairs (decoys), so **never link on name alone**. No duplicate current emails.
+- **Final resolver semantics (Phase 3, `code/identity.py`):** a request email matches a user iff it is among the emails the user held as of `audit_at` (snapshot plus audit chain); exactly one user must match (`IdentityError` otherwise). `match=current` iff the email was the live one at `audit_at`, else `historical` with the proving `audit_id`. The identifier set = every email / sha256 hash (computed and audit-recorded) / digits-only phone held at or before `audit_at`, plus `user_id`. Names are never link keys. Results: eval 418/100/0, samples 29/3/0, 32/32 equal to the walkthrough. Subjects with several requests: user_18 (case_52, case_33), user_07 (case_61 + sample case_07), user_17 (case_46 + sample case_17). Email chains: user_10, user_35 (case_37).
 - Low user IDs (`user_01 .. user_~22`) appear in the hand-crafted scenario events (LINK_RESOURCE_IDENTITY), which suggests the sample and special scenarios use them.
 
 ### 1.5 system_activity (4,011 rows)
