@@ -14,8 +14,9 @@ deletion workflow recorded in system_activity:
 Requests that share a reported_at compete for the same candidates, so all deletion requests are assigned
 jointly: (1) a candidate whose resource is identifier-linked to another subject is removed; (2) a candidate
 identifier-linked to this subject wins; (3) unique candidates are fixed and removed elsewhere until nothing
-changes; (4) remaining ties go in subject order (lower user number first) to the earliest candidate — a
-documented last resort that matched both colliding sample groups (cases 25/26 and 27/28).
+changes; (4) remaining ties go in case-number order to the earliest candidate — a documented last resort
+(a generator-order artifact, not evidence) that matched all three colliding sample groups (cases 25/26,
+27/28, and 03 vs eval case_44), where subject order matched 2 and queue order 1.
 No account candidate → the subject's identifier-linked account (latest id) → else L6: the scenario naming
 convention user_NN → account_0NN (sample case_04; low confidence).
 """
@@ -51,8 +52,8 @@ class WorkflowLink:
     method: str        # "own-identifier" | "unique" | "elimination" | "tie-break" | "identifier-account" | "fallback"
 
 
-def _user_number(user_id):
-    return int(re.sub(r"\D", "", user_id) or 0)
+def _number(identifier):
+    return int(re.sub(r"\D", "", identifier) or 0)
 
 
 def _in_window(activity, request, window):
@@ -100,7 +101,7 @@ def _assign(requests, candidates, owners):
                 result[cid] = (left[0], "unique" if len(acts) == 1 else "elimination")
                 taken.add(left[0].activity_id)
                 changed = True
-    for cid in sorted((c for c in cands if c not in result), key=lambda c: (_user_number(by_case[c].user_id), c)):
+    for cid in sorted((c for c in cands if c not in result), key=lambda c: (_number(c), c)):
         left = sorted((a for a in cands[cid][0] if a.activity_id not in taken), key=lambda a: (a.event_time, a.activity_id))
         if left:
             result[cid] = (left[0], "tie-break")
@@ -141,7 +142,7 @@ def assign_workflows(requests, activities, owners, has_window_evidence=lambda re
             rid = max(owned_accounts[r.user_id], key=lambda x: int(re.sub(r"\D", "", x)))
             account = WorkflowLink(rid, "L1", "", "identifier-account")
         else:
-            account = WorkflowLink(f"account_{_user_number(r.user_id):03d}", "L6", "", "fallback")
+            account = WorkflowLink(f"account_{_number(r.user_id):03d}", "L6", "", "fallback")
         analytics_link = None
         if r.case_id in ana:
             a, method = ana[r.case_id]

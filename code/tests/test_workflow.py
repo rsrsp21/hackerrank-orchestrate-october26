@@ -41,16 +41,16 @@ def test_owned_by_other_subject_is_removed():
     assert out["c1"]["account"].kind == "L6"  # no free candidate left → fallback
 
 
-def test_tie_break_subject_order_and_template_offsets():
-    requests = [req("c26", "user_26", "COMPLETE"), req("c25", "user_25", "COMPLETE")]
+def test_tie_break_case_order_and_template_offsets():
+    requests = [req("case_26", "user_26", "COMPLETE"), req("case_25", "user_99", "COMPLETE")]  # case order, not user order
     acts = [act("x", -60, "account_1", "SUCCESS"), act("y", -59, "account_2", "SUCCESS"),
             act("p", -29, "analytics_1895", "SUCCESS", "ANONYMIZE_RECORD", "analytics_platform"),
             act("q", -29 + 0.3, "analytics_4566", "SUCCESS", "ANONYMIZE_RECORD", "analytics_platform"),
             act("late", +90, "analytics_7777", "SUCCESS", "ANONYMIZE_RECORD", "analytics_platform")]  # wrong offset
     out = assign_workflows(requests, acts, {})
-    assert out["c25"]["analytics"].resource_id == "analytics_1895"
-    assert out["c26"]["analytics"].resource_id == "analytics_4566"
-    assert {out["c25"]["account"].method, out["c26"]["account"].method} == {"tie-break"}
+    assert out["case_25"]["analytics"].resource_id == "analytics_1895"
+    assert out["case_26"]["analytics"].resource_id == "analytics_4566"
+    assert {out["case_25"]["account"].method, out["case_26"]["account"].method} == {"tie-break"}
 
 
 def test_analytics_eligibility_and_window_evidence():

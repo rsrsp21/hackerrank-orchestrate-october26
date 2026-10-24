@@ -621,3 +621,25 @@ repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
 worktree=main
 parent_agent=none
 
+## [2026-10-24T16:55:48Z] Phase 4 task 4.7: per-case investigation
+
+User Prompt (verbatim, secrets redacted):
+yes
+
+Agent Response Summary:
+Implemented code/investigate.py, which combines identity, the evidence index, identifier links, and joint workflows into one investigation per case, with a two-pass attribution of identifier-less anonymized analytics (only provisionally COMPLETE cases compete) and a temporal guard on every chosen evidence. Case_03 exposed that the subject-order tie-break was wrong; revised Q11 to case-number order, the only order consistent with all three sample collision groups, documented as a generator-order artifact used as a last resort. Sample results: status 32/32, resource sets exact for 29/32 (the remainder are two unreachable audit records and the accepted case_23 tie), cited evidence 75/75. Added investigation tests and deleted one vacuous test; 117 tests pass.
+
+Actions:
+* Created code/investigate.py, code/tests/test_investigate.py; edited code/workflow.py, code/tests/test_workflow.py
+* Ran sample comparisons and pytest (117 passed)
+* Edited plan/phases/phase4.md; git commit on branch solution
+* Appended to log.txt
+
+Context:
+tool=Claude Code
+model=claude-opus-5-5
+branch=solution
+repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
+worktree=main
+parent_agent=none
+
