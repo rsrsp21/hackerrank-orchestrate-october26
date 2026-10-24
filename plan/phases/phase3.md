@@ -60,7 +60,7 @@ Rules:
 ## 4. Tasks
 - [x] 3.1 `code/identity.py` implemented (2026-10-24): `IdentityResolver.resolve(email, as_of)` → `Subject` (user_id, match, match_audit_id, emails, email_hashes, phones, names, `link_keys()`), raises `IdentityError` on 0 or >1 users; as_of-aware value sets; `load_identity_tables()` helper. Smoke run: eval 418 current / 100 historical / 0 errors; samples 29 / 3 / 0; chains handled (user_10 → 3 emails).
 - [x] 3.2 (implemented with 3.1; tests pending in 3.3) Shared normalizers (`norm_email`, `norm_phone`, `extract_emails`, `sha256_email`) in `identity.py`, documented as the single source of truth for Phase 4 linking.
-- [ ] 3.3 Unit tests `code/tests/test_identity.py`:
+- [x] 3.3 Unit tests `code/tests/test_identity.py` (2026-10-24): **14 identity tests; the suite is 74/74 green**. The synthetic post-as_of test caught a real bug (an email live at as_of but changed later did not resolve); fixed by matching against the as_of value set and defining `current` = the value live at as_of. Eval/sample counts unchanged (418/100, 29/3). Covers:
   - current-email match (e.g. case_01 → user_01)
   - historical-email match with `match_audit_id` (case_10 → user_10 via audit_121; case_29 → user_29 via audit_284; case_30 → user_30 via audit_280)
   - identifier set includes old emails, old hashes, old phones (user_11: haruka.s183889@…, old hash, +81 90 6156 0005)

@@ -66,25 +66,30 @@ class Subject:
 class IdentityResolver:
     def __init__(self, identity_rows, audit_rows):
         self._current = {r["user_id"]: r for r in identity_rows}
-        self._by_email = {}
-        for r in identity_rows:
-            self._by_email.setdefault(norm_email(r["email"]), set()).add(r["user_id"])
         self._changes = {}
         for r in sorted(audit_rows, key=lambda r: (r["event_time"], r["audit_id"])):
             self._changes.setdefault(r["user_id"], []).append(r)
+        # every email ever seen for a user -> candidate users (filtered by as_of in resolve)
+        self._candidates = {}
+        for r in identity_rows:
+            self._candidates.setdefault(norm_email(r["email"]), set()).add(r["user_id"])
+        for r in audit_rows:
+            if r["field_name"] == "email":
+                for v in (r["old_value"], r["new_value"]):
+                    self._candidates.setdefault(norm_email(v), set()).add(r["user_id"])
 
-    def _changes_until(self, user_id, as_of):
-        return [c for c in self._changes.get(user_id, []) if parse_ts(c["event_time"]) <= as_of]
+    def _live_value(self, user_id, field, as_of):
+        """The value of `field` in effect at as_of."""
+        later = [c for c in self._changes.get(user_id, [])
+                 if c["field_name"] == field and parse_ts(c["event_time"]) > as_of]
+        return later[0]["old_value"] if later else self._current[user_id][field]
 
-    def _historical_matches(self, email, as_of):
-        hits = {}
-        for user_id, changes in self._changes.items():
-            for c in changes:
-                if c["field_name"] != "email" or parse_ts(c["event_time"]) > as_of:
-                    continue
-                if email in (norm_email(c["old_value"]), norm_email(c["new_value"])):
-                    hits.setdefault(user_id, c["audit_id"])
-        return hits
+    def _match_audit_id(self, user_id, email, as_of):
+        for c in self._changes.get(user_id, []):
+            if c["field_name"] == "email" and parse_ts(c["event_time"]) <= as_of \
+                    and email in (norm_email(c["old_value"]), norm_email(c["new_value"])):
+                return c["audit_id"]
+        return None
 
     def _values_as_of(self, user_id, field, as_of):
         """Every value of `field` the user held at or before as_of."""
@@ -97,15 +102,12 @@ class IdentityResolver:
 
     def resolve(self, email, as_of):
         e = norm_email(email)
-        current = {u for u in self._by_email.get(e, set())
-                   if not any(c["field_name"] == "email" and parse_ts(c["event_time"]) > as_of
-                              for c in self._changes.get(u, []))}
-        historical = self._historical_matches(e, as_of)
-        users = current | set(historical)
+        users = {u for u in self._candidates.get(e, set())
+                 if e in {norm_email(v) for v in self._values_as_of(u, "email", as_of)}}
         if len(users) != 1:
             raise IdentityError(f"{email!r} resolves to {len(users)} users as of {as_of.isoformat()}: {sorted(users)}")
         user_id = users.pop()
-        match = "current" if user_id in current else "historical"
+        match = "current" if e == norm_email(self._live_value(user_id, "email", as_of)) else "historical"
         emails = {norm_email(v) for v in self._values_as_of(user_id, "email", as_of)}
         hashes = {sha256_email(v) for v in emails}
         hashes |= {v.strip().lower() for v in self._values_as_of(user_id, "email_hash", as_of) if is_sha256(v)}
@@ -113,7 +115,7 @@ class IdentityResolver:
         return Subject(
             user_id=user_id,
             match=match,
-            match_audit_id=None if match == "current" else historical[user_id],
+            match_audit_id=None if match == "current" else self._match_audit_id(user_id, e, as_of),
             emails=frozenset(emails),
             email_hashes=frozenset(hashes),
             phones=frozenset(p for p in phones if p),
