@@ -577,3 +577,25 @@ repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
 worktree=main
 parent_agent=none
 
+## [2026-10-24T16:45:52Z] Phase 4 tasks 4.3-4.5: image facts interface, evidence index, identifier linking
+
+User Prompt (verbatim, secrets redacted):
+yes
+
+Agent Response Summary:
+4.3: images.py converts validated image facts from a committed code/llm_cache/image_facts folder (shipped for keyless reproducibility; no hand transcriptions). 4.4: EvidenceIndex with the two-clock rule, direct-over-omission state selection, and a new sample-proven request window (state evidence must lie in [requested_at, audit_at]). 4.5: L1-L4 identifier linking with a membership horizon. Measured on the samples: strict recall 0.823 and membership-any 0.886, both with precision 1.000. Asked the user before loosening a constitution rule; they approved using post-audit evidence for membership only (recorded as constitution Art. 3.5 and in the guardrails). Wrote 12 new tests; fixed one wrong test expectation (an in-window omission proof is valid). 105 tests pass.
+
+Actions:
+* Created code/evidence/images.py, code/evidence/index.py, code/linking.py, code/tests/test_index_linking.py
+* AskUserQuestion (rule amendment approved); edited plan/constitution.md, plan/guardrails.md, plan/phases/phase4.md
+* Ran sample linking measurements and pytest (105 passed); git commit on branch solution
+* Appended to log.txt
+
+Context:
+tool=Claude Code
+model=claude-opus-5-5
+branch=solution
+repo_root=C:\Users\rsrsp\Downloads\hackerrank-orchestrate-october26
+worktree=main
+parent_agent=none
+

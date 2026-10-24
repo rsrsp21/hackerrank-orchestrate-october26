@@ -28,6 +28,8 @@ Concrete, checkable rules that put `plan/constitution.md` into practice. Before 
 
 - Filter before reasoning: `captured_at <= audit_at`, `event_time <= audit_at`.
 - **Two clocks per observation** (data_notes §3.1): use it only if **both** the file's manifest `captured_at` **and** the record-level time (`observed_at` / `recorded_at` / snapshot `captured_at` / log line ts) are `<= audit_at`. Known traps: evidence_13 (`account_1417`, FOUND @08-14 after capture 08-12) and evidence_36 (`account_5043`, FOUND @04-11 after capture 04-09).
+- **Request window:** state evidence must be observed in `[requested_at, audit_at]`. Earlier observations describe an earlier episode (e.g. object_19 / account_6523 for the same subjects' earlier requests).
+- **Membership vs state (constitution Art. 3.5):** linking may use post-audit evidence; state and citations never do.
 - Identity history is valid only up to `audit_at`.
 - Never cite evidence captured after `audit_at`. The validator must enforce this.
 - Compare timestamps as parsed UTC datetimes, never as raw strings with mixed formats.

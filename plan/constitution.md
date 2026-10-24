@@ -29,6 +29,7 @@ Build a terminal-runnable deletion-audit agent that, for each of the 518 request
 2. A resource's state is what the evidence shows at `audit_at`.
 3. Anything with a timestamp **after `audit_at`** (evidence `captured_at`, activity `event_time`, audit `event_time`) does not exist for that case.
 4. Every finding and every `COMPLETE` verification must be backed by a real participant-visible `file_id`, `activity_id`, or `audit_id` that actually proves it.
+5. **Amendment (2026-10-24, approved by the user):** *membership* (which resources belong to the subject) may be established from any participant evidence, including evidence captured after `audit_at`. *State* and *citations* use only evidence observed in `[requested_at, audit_at]` under the two-clock rule. Post-audit evidence can never create a finding or be cited. Rationale: 5 sample retained audit records (cases 09, 23, 24, 29, 30) are visible only in post-audit files, and every evidence cited in the samples lies in `[requested_at, audit_at]`.
 
 ## Article 4 — Identity
 
